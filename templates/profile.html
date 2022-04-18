@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if valid == 'Valid' %}
+<h1>Поприветствуйте себя, {{name}}!</h1>
+<img src="{{ url_for('static', filename='img.jpg') }}" alt="Это вы">
+{% endif %}
+{% if valid == 'Invalid' %}
+<h1>Пользователя с таким именем не существует(</h1>
+{% endif %}
+{% endblock %}
