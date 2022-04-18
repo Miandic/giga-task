@@ -12,8 +12,12 @@ def checkAccount(log, pas, new):
         print('Invalid')
         return 'Invalid'
     else:
-        print('Bruh old log/pas check what lol')
-        return 'Invalid'
+        if 1 == 1:  #Сверить по базе
+            print('Valid')
+            return 'Valid'
+        else:
+            print('Degenerat blyat')
+            return 'Invalid'
     #Cheking ... Cheking...
 
 
@@ -41,18 +45,28 @@ def registr(name = None):
         tempPassword = request.form['password']
         print("Input! Login: " + tempLogin + "; Password: " + tempPassword)
         if checkAccount(tempLogin, tempPassword, 1) == 'Valid':
-            return render_template('index.html', name=name)
             login = tempLogin
+            return render_template('index.html', name=name)
         else:
             name = 'Invalid'
         return render_template('reg.html', name=name)
     else:
         return render_template('reg.html', name=name)
 
-@app.route('/validate_reg')
-def validate_reg(name = None):
-    if checkAccount(tempLogin, tempPassword, 1) == 'Valid':
-        return render_template('profile.html', name=name)
+@app.route('/login', methods=['GET', 'POST'])
+def login(name = None):
+    global login
+    if request.method == 'POST':
+        tempLogin = request.form['login']
+        tempPassword = request.form['password']
+        print("Login attempt! Login: " + tempLogin + "; Password: " + tempPassword)
+        if checkAccount(tempLogin, tempPassword, 0) == 'Valid':
+            name = tempLogin
+            valid = 'Valid'
+            return render_template('profile.html', name=name, valid=valid)
+        else:
+            name = 'Invalid'
+        return render_template('reg.html', name=name)
     else:
         return render_template('reg.html', name=name)
 
