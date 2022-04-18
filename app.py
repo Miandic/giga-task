@@ -1,8 +1,56 @@
 from flask import Flask, render_template, request
+import psycopg2
 import random
 app = Flask(__name__)
 
 global login
+global conn
+global cur
+
+def set_connection():
+    global conn
+    global cur
+    conn = psycopg2.connect(user="postgres", password="123",
+                                  host="127.0.0.1",
+                                  port="5432",
+                                  database="pog")
+    cur = conn.cursor()
+
+def close_connection():
+        global conn
+        global cur
+
+        cur.close()
+        conn.commit()
+
+        if conn is not None:
+                conn.close()
+
+def insert_value(login , password):
+    set_connection()
+
+    command = """insert into users(login, password) values (%s,  %s)"""
+    value  =  (login, password)
+
+    cur.execute(command, value)
+
+    close_connection()
+
+
+def get_values():
+    set_connection()
+
+    command = "SELECT * FROM Users"
+    cur.execute(command)
+
+    ans = []
+
+    result = cur.fetchall()
+    for x in result:
+        ans.append(x)
+
+    close_connection()
+    return ans
 
 def checkAccount(log, pas, new):
     if new == 1:
@@ -46,6 +94,7 @@ def registr(name = None):
         print("Input! Login: " + tempLogin + "; Password: " + tempPassword)
         if checkAccount(tempLogin, tempPassword, 1) == 'Valid':
             login = tempLogin
+            insert_value(tempLogin, tempPassword)
             return render_template('index.html', name=name)
         else:
             name = 'Invalid'
@@ -60,7 +109,13 @@ def login(name = None):
         tempLogin = request.form['login']
         tempPassword = request.form['password']
         print("Login attempt! Login: " + tempLogin + "; Password: " + tempPassword)
-        if checkAccount(tempLogin, tempPassword, 0) == 'Valid':
+        users = get_values()
+        print(users)
+        flag = False
+        for user in users:
+            if (user[1] == tempLogin and  user[2] == tempPassword):
+                flag = True
+        if checkAccount(tempLogin, tempPassword, 0) == 'Valid' and flag  :
             name = tempLogin
             valid = 'Valid'
             return render_template('profile.html', name=name, valid=valid)
@@ -73,7 +128,6 @@ def login(name = None):
 @app.route('/upload')
 def upload(name = None):
     return render_template('upload.html', name=name)
-
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
