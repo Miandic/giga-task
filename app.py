@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request
 import psycopg2
 import random
+import os
+
+
 app = Flask(__name__)
 
 global login
@@ -29,8 +32,8 @@ def close_connection():
 def insert_value(login , password):
     set_connection()
 
-    command = """insert into users(login, password) values (%s,  %s)"""
-    value  =  (login, password)
+    command = """insert into users(login, password, photocnt) values (%s,  %s, %s)"""
+    value  =  (login, password, 0)
 
     cur.execute(command, value)
 
@@ -92,9 +95,17 @@ def registr(name = None):
         tempLogin = request.form['login']
         tempPassword = request.form['password']
         print("Input! Login: " + tempLogin + "; Password: " + tempPassword)
+        #need check login on unique
         if checkAccount(tempLogin, tempPassword, 1) == 'Valid':
+
+
             login = tempLogin
+
+            dirName = f'Photos/{login}'
+            os.makedirs(dirName)
+
             insert_value(tempLogin, tempPassword)
+
             return render_template('index.html', name=name)
         else:
             name = 'Invalid'
@@ -118,7 +129,8 @@ def login(name = None):
         if checkAccount(tempLogin, tempPassword, 0) == 'Valid' and flag  :
             name = tempLogin
             valid = 'Valid'
-            return render_template('profile.html', name=name, valid=valid)
+            phtCnt = user[3]
+            return render_template('profile.html', name=name, valid=valid, phtCnt = phtCnt)
         else:
             name = 'Invalid'
         return render_template('reg.html', name=name)

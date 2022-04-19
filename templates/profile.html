@@ -1,10 +1,15 @@
 {% extends 'base.html' %}
 {% block content %}
 {% if valid == 'Valid' %}
-<h1>Поприветствуйте себя, {{name}}!</h1>
-<img src="{{ url_for('static', filename='img/aboba.jpg') }}" alt="Это вы">
+  <h1>Поприветствуйте себя, {{name}}!</h1>
+  {% if phtCnt >= 1 %}
+    {% for i in range (phtCnt) %}
+        <img src = " ../Photos/{{name}}/{{i}}.jpg " alt = 'Russia'>
+    {% endfor %}
+  {% endif %}
+  <img src="{{ url_for('static', filename='img/aboba.jpg') }}" alt="Это вы">
 {% endif %}
 {% if valid == 'Invalid' %}
-<h1>Пользователя с таким именем не существует(</h1>
+  <h1>Пользователя с таким именем не существует(</h1>
 {% endif %}
 {% endblock %}
