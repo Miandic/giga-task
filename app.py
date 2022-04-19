@@ -46,8 +46,19 @@ def login(valid= None):
 
 
 @app.route('/reg', methods=['GET', 'POST'])
-def registr(name = None):
-    pass
+def reg(name = None):
+    if  request.method == 'POST':
+        tempLogin = request.form['login']
+        tempPassword = request.form['password']
+        tempPhone = request.form['phone']
+        functions.add_user(conn, cur, tempLogin, tempPassword, tempPhone)
+        return redirect('/login')
+    else:
+        return render_template('reg.html')
+
+@app.route('/logout')
+def logout():
+    return redirect('/login')
 
 
 app.run()

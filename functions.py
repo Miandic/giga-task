@@ -33,7 +33,8 @@ def get_values(cur):
     return ans
 
 def get_users(conn, cur):
-    conn, cur = set_connection(conn, cur)
+    if  conn == None or cur == None:
+        conn, cur = set_connection(conn, cur)
 
     command = "SELECT * From users"
     cur.execute(command)
@@ -41,3 +42,11 @@ def get_users(conn, cur):
     ans = get_values(cur)
 
     return ans
+def add_user(conn, cur, login, password, phn):
+    if  conn == None or cur == None:
+        conn, cur = set_connection(conn, cur)
+
+    command = """INSERT INTO USERS(login, nickname, password, phonenumber) values(%s, %s, %s,%s)"""
+    values = (login, login, password, int(phn))
+
+    cur.execute(command, values)
