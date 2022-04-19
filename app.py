@@ -129,8 +129,7 @@ def login(name = None):
         if checkAccount(tempLogin, tempPassword, 0) == 'Valid' and flag  :
             name = tempLogin
             valid = 'Valid'
-            phtCnt = user[3]
-            return render_template('profile.html', name=name, valid=valid, phtCnt = phtCnt)
+            return render_template('profile.html', name=name, valid=valid)
         else:
             name = 'Invalid'
         return render_template('reg.html', name=name)
