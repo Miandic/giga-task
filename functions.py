@@ -84,8 +84,30 @@ def add_user(conn, cur, login, nickName,  password, phn):
     values = (login, nickName, password, int(phn))
 
     cur.execute(command, values)
+    conn.commit()
 
-    conn.comit()
+
+def add_task(conn, cur, userid, boardid, taskname, timetobedone, taskcontent, taskcolour):
+    if  conn == None or cur == None:
+        conn, cur = set_connection(conn, cur)
+
+    command = """INSERT INTO USERS(userid, boardid, taskname, timetobedone, taskcontent, taskcolour) values(%s, %s, %s, %s, %s, %s)"""
+    values = (userid, boardid, taskname, timetobedone, taskcontent, taskcolour)
+
+    cur.execute(command, values)
+    conn.commit()
+
+
+def add_boardColumn(conn, cur, name, taskid, boardid, posOnBoard ):
+    if  conn == None or cur == None:
+        conn, cur = set_connection(conn, cur)
+
+    command = """INSERT INTO USERS(name, taskid, boardid, posOnBoard) values(%s, %s, %s, %s)"""
+    values = (name, taskid, boardid, posOnBoard)
+
+    cur.execute(command, values)
+    conn.commit()
+
 def add_board_for_user(conn, cur, userId,  boardName, userRight):
     if  conn == None or cur == None:
         conn, cur = set_connection(conn, cur)
@@ -160,3 +182,14 @@ def edit_tasks(conn, cur, taskId, userid, boardid, taskname, timetobedone, taskc
 
     cur.execute(command, values)
     conn.commit()
+
+def delete(conn, cur, tableName, elementId):
+    if  conn == None or cur == None:
+        conn, cur = set_connection(conn, cur)
+
+    command = """DELETE FROM %s  WHERE id = %s"""
+    values = (tableName,  elementId)
+
+    cur.execute(command, values)
+    conn.commit()
+    
