@@ -108,16 +108,16 @@ def add_boardColumn(conn, cur, name, taskid, boardid, posOnBoard ):
     cur.execute(command, values)
     conn.commit()
 
-def add_board_for_user(conn, cur, userId,  boardName, userRight):
+def add_board_for_user(conn, cur, userId,  boardName):
     if  conn == None or cur == None:
         conn, cur = set_connection(conn, cur)
 
-    command = """INSERT INTO Boards(userId, name, userright, columncnt ) VALUES(%s, %s, %s,  3) """
-    values = (userId, boardName, userRight)
+    command = """INSERT INTO Boards(userId, name, userright, columncnt ) VALUES(%s, %s, "creator",  3) """
+    values = (userId, boardName)
 
 
     cur.execute(command, values)
-    cur.execute("select * from boards where userId = %s and  name = %s and userright = %s" , [userId, boardName, userRight])
+    cur.execute("select * from boards where userId = %s and  name = %s and userright = 'creator'" , [userId, boardName])
     board = get_values(cur)
     board = board[0]
     command =  """
@@ -187,9 +187,9 @@ def delete(conn, cur, tableName, elementId):
     if  conn == None or cur == None:
         conn, cur = set_connection(conn, cur)
 
-    command = """DELETE FROM %s  WHERE id = %s"""
+    command = "DELETE FROM %s WHERE id = %s"
     values = (tableName,  elementId)
 
     cur.execute(command, values)
     conn.commit()
-    
+delete(None,  None, "users" , 3)
