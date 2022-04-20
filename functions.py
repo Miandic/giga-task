@@ -101,13 +101,62 @@ def add_board_for_user(conn, cur, userId,  boardName, userRight):
     command =  """
     insert Into boardColumn(columnName, boardid, posOnBoard) values
     (to-do, %s, 1),
-    (in-progress, %s, 1),
-    (done, %s, 1),
+    (in-progress, %s, 2),
+    (done, %s, 3),
     """
     values = (board['id'], board['id'],board['id'])
     cur.execute(command,values)
-    close_connection(conn,cur)
+    conn.commit()
 
-add_board_for_user(None , None , 3, 'Russia', 'creator' )
+def edit_user(conn, cur, userid, login, nickname, password, phonenumber):
+    if  conn == None or cur == None:
+        conn, cur = set_connection(conn, cur)
+    command = """UPDATE Users
+    set login = %s, nickname = %s, password = %s, phonenumber = %s
+    where  id = %s
+    """
 
-def edit_user(conn, cur)
+    values = (login, nickname, password, phonenumber, userid)
+
+    cur.execute(command, values)
+    conn.commit()
+
+def edit_board(conn ,cur, boardid ,  name, columncnt, userright, userid ):
+    if  conn == None or cur == None:
+        conn, cur = set_connection(conn, cur)
+    command = """UPDATE boards
+    set name = %s, columncnt = %s, userright = %s, userid = %s
+    where  id = %s
+    """
+
+    values = ( name, columncnt, userright, userid , boardid)
+
+    cur.execute(command, values)
+    conn.commit()
+
+def edit_boardColumn(conn, cur, columnId, name, taskid, boardid, posOnBoard ):
+    if  conn == None or cur == None:
+        conn, cur = set_connection(conn, cur)
+    command = """UPDATE boards
+    set columnname = %s, taskid = %s, boardid = %s, posOnBoard = %s
+    where  id = %s
+    """
+
+    values = ( name, boardid, userright, boardid , posOnBoard, columnId )
+
+    cur.execute(command, values)
+    conn.commit()
+
+
+def edit_tasks(conn, cur, taskId, userid, boardid, taskname, timetobedone, taskcontent, taskcolour ):
+    if  conn == None or cur == None:
+        conn, cur = set_connection(conn, cur)
+    command = """UPDATE boards
+    set userid = %s, taskid = %s, boardid = %s, taskname = %s, timetobedone = %s, taskcontent = %s, taskcolour = %s
+    where  id = %s
+    """
+
+    values = ( userid, boardid, userright, boardid , taskname, timetobedone, taskcontent, taskcolour, taskId    )
+
+    cur.execute(command, values)
+    conn.commit()
