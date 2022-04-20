@@ -192,4 +192,4 @@ def delete(conn, cur, tableName, elementId):
 
     cur.execute(command, values)
     conn.commit()
-delete(None,  None, "users" , 3)
+    
