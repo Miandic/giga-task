@@ -74,7 +74,7 @@ def get_board_user(conn , cur):
         from tasks, boardColumn, boards
         where tasks.boardId = boards.id and boardColumn.posOnBoard = '1' and boardColumn.taskid = tasks.id
     """
-    
+
 
 def add_user(conn, cur, login, password, phn):
     if  conn == None or cur == None:
@@ -86,3 +86,28 @@ def add_user(conn, cur, login, password, phn):
     cur.execute(command, values)
 
     conn.comit()
+def add_board_for_user(conn, cur, userId,  boardName, userRight):
+    if  conn == None or cur == None:
+        conn, cur = set_connection(conn, cur)
+
+    command = """INSERT INTO Boards(userId, name, userright, columncnt ) VALUES(%s, %s, %s,  3) """
+    values = (userId, boardName, userRight)
+
+
+    cur.execute(command, values)
+    cur.execute("select * from boards where userId = %s and  name = %s and userright = %s" , [userId, boardName, userRight])
+    board = get_values(cur)
+    board = board[0]
+    command =  """
+    insert Into boardColumn(columnName, boardid, posOnBoard) values
+    (to-do, %s, 1),
+    (in-progress, %s, 1),
+    (done, %s, 1),
+    """
+    values = (board['id'], board['id'],board['id'])
+    cur.execute(command,values)
+    close_connection(conn,cur)
+
+add_board_for_user(None , None , 3, 'Russia', 'creator' )
+
+def edit_user(conn, cur)
