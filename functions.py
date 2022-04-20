@@ -32,6 +32,29 @@ def get_values(cur):
 
     return ans
 
+def get_boards(conn, cur , userId):
+    if  conn == None or cur == None:
+        conn, cur = set_connection(conn, cur)
+
+    command = """select * from boards where userId = %s """
+
+    cur.execute(command, [userId])
+    ans = get_values(cur)
+
+    return ans
+
+def get_tasks(conn ,cur, boardId):
+    if  conn == None or cur == None:
+        conn, cur = set_connection(conn, cur)
+
+    command = """select * from tasks where boardId = %s """
+
+    cur.execute(command, [userId])
+    ans = get_values(cur)
+
+    return ans
+
+
 def get_users(conn, cur):
     if  conn == None or cur == None:
         conn, cur = set_connection(conn, cur)
@@ -42,6 +65,7 @@ def get_users(conn, cur):
     ans = get_values(cur)
 
     return ans
+
 def add_user(conn, cur, login, password, phn):
     if  conn == None or cur == None:
         conn, cur = set_connection(conn, cur)

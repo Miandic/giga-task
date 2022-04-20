@@ -8,7 +8,7 @@ app = Flask (__name__)
 conn = None
 cur = None
 command  = ""
-userID = 0
+userId = 0
 
 
 conn, cur = functions.set_connection(conn , cur)
@@ -26,6 +26,7 @@ def index(name = None):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login(valid= None):
+    global userId
     if request.method == 'POST':
         tempLogin = request.form['login']
         tempPassword = request.form['password']
@@ -33,9 +34,11 @@ def login(valid= None):
         users = functions.get_users(conn, cur)
         for user in users:
             if user['login'] == tempLogin and user['password'] == tempPassword:
+
                 resp = make_response(redirect('/'))
                 resp.set_cookie('login',  tempLogin )
                 resp.set_cookie('password', tempPassword)
+
                 userId = user['id']
                 return resp
         else:
@@ -60,5 +63,10 @@ def reg(name = None):
 def logout():
     return redirect('/login')
 
+@app.route('/board')
+def desk():
+    global userId
+    boards = functions.get_boards(conn ,cur, userId)
+    return render_template('board.html', boards = boards)
 
 app.run()
