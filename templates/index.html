@@ -12,8 +12,30 @@
     <p class="menu_button" onclick="location.href='/logout'">Выйти</p>
 </div>
 <div class="boardList">
-    {% for board in boards %}
-    <p>{{board['name']}}</p>
-    {% endfor %}
+    <div class="yours">
+        <h1>Ваши доски:</h1>
+        {% if create == 'true' %}
+        <p onclick="location.href='/newBoard'">Создайте новую доску!</p>
+        {% endif %}
+        {% for board in boards %}
+        {% if board['userright'] == 'creator'%}
+        <div class="boardItem">
+            <p class="boardName">Доска {{board['name']}}</p>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% if other == 'true' %}
+    <div class="other">
+        <h1>Другие доски:</h1>
+        {% for board in boards %}
+        {% if board['userright'] != 'creator'%}
+        <div class="boardItem">
+            <p class="boardName">Доска {{board['name']}}</p>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
 </div>
 {% endblock %}
