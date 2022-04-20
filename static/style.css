@@ -145,7 +145,7 @@ input[type="text"] {
     width: 75%;
     border-radius: 2px;
     margin: 5% auto;
-    background-color: #6B78B9;
+    background-color: #5435B8;
     border: none;
     color: white;
     padding: 10px 5px;
@@ -162,13 +162,14 @@ input[type="text"] {
     display: inline-block;
     width: 15%;
     min-width: 150px;
-    background-color: #5435B8;
+    background-color: #6B78B9;
     min-height: 90vh;
+    border-right: 4px solid #5435B8;
 }
 .avatar{
     display: block;
     border-radius: 50%;
-    box-shadow: 0 0 0 3px #6B78B9, 0 0 13px #333;
+    box-shadow: 0 0 0 3px #5435B8, 0 0 13px #333;
     margin:15% auto 5% auto;
     width: 100px;
     height: 100px;
@@ -177,23 +178,87 @@ input[type="text"] {
     cursor: pointer;
 }
 .nick{
+    text-align: center;
     font-family: 'Work Sans', sans-serif;
-    font-size: 120%;
+    font-size: 175%;
     color: white;
     display: block;
-    margin: 5% 8%;
+    margin: 5% auto;
+    -moz-user-select: auto;
+    -khtml-user-select: auto;
+    -webkit-user-select: auto;
+    user-select: auto;
 }
 .logintxt{
+    text-align: center;
     font-family: 'Work Sans', sans-serif;
     color: #cecece;
     display: block;
-    margin: 5% 8%;
+    margin: 5% auto;
+    -moz-user-select: auto;
+    -khtml-user-select: auto;
+    -webkit-user-select: auto;
+    user-select: auto;
 }
 .line{
-    width:100%;
-    color: #6B78B9;
+    width:101%;
+    height: 3px;
+    background-color: #5435B8;
 }
 .boardList{
     display: inline-block;
     vertical-align: top;
+}
+.boardItem{
+    display: inline-block;
+    min-width: 20vw;
+    margin: 2%;
+    border-radius: 3px;
+    background-color: #A8BBEB;
+    padding: 3%;
+    text-align: center;
+    cursor: pointer;
+}
+.boardItem:hover{
+    background-color: #8596e8;
+}
+
+.boardName{
+    font-family: 'Work Sans', sans-serif;
+    color: white;
+    margin: auto;
+}
+.yours{
+    margin: 5%;
+}
+.yours > h1{
+    min-width: 50vw;
+    font-family: 'Work Sans', sans-serif;
+    color: white;
+    font-style: bold;
+}
+.yours > p{
+    display: inline-block;
+    min-width: 20vw;
+    margin: 2%;
+    border-radius: 3px;
+    background-color: #A8BBEB;
+    padding: 3%;
+    text-align: center;
+    font-family: 'Work Sans', sans-serif;
+    color: white;
+    font-size: 125%;
+    cursor: pointer;
+}
+.yours > p:hover{
+    background-color: #8596e8;
+}
+.other{
+    margin: 5%;
+}
+.other > h1{
+    min-width: 50vw;
+    font-family: 'Work Sans', sans-serif;
+    color: white;
+    font-style: bold;
 }

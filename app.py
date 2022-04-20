@@ -15,9 +15,9 @@ conn, cur = functions.set_connection(conn , cur)
 
 
 @app.route('/')
-def index(name = None, nick=None):
+def index(name=None, nick=None, create='true', other = None):
     #проверка по кукуам что аккаунт войдён
-    #если нет, то5
+    #если нет, то
     if (request.cookies.get('login') != None):
         name = request.cookies.get('login')
         users = functions.get_users(conn, cur)
@@ -28,7 +28,13 @@ def index(name = None, nick=None):
         print(userId)
         boards = functions.get_boards(conn, cur, userId)
         print(boards)
-        return  render_template('index.html', name=name, nick=nick, boards=boards)
+        for board in boards:
+            if board['userright'] == 'creator':
+                create = None
+            if board['userright'] != 'creator':
+                other = 'true'
+        print(create)
+        return  render_template('index.html', name=name, nick=nick, boards=boards, create=create, other=other)
     else:
         return redirect('/login')
 
