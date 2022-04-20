@@ -79,11 +79,25 @@ def board(boardId):
 select columnName, posOnBoard, boardCOlumn.id
 from boardColumn,  boards
 where boardColumn.boardId = %s
+ORDER BY posOnBoard
 """)
 
     cur.execute(command, [boardId])
-    columns = cur.fetchall()
+    columns = functions.get_values(cur)
+    cur.execute("SELECT * from boards where id = %s ",  [boardId])
+    board = functions.get_values(cur)
+    board = board[0]
+    tasks = []
     print(columns)
-    return render_template('board.html', columns =columns )
+    for i in range(1, int(board['columncnt']) +1):
+        command = """
+        select taskName, taskColour, taskContent, tasks.id , tasks.timetobedone
+        from tasks, boardColumn, boards
+        where tasks.boardId = boards.id and boardColumn.posOnBoard = %s and boardColumn.taskid = tasks.id
+        """
+        cur.execute(command, [i])
+        tasks.append(functions.get_values(cur))
+
+    return render_template('board.html', board = board, columns =columns, tasks = tasks )
 
 app.run()

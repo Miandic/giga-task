@@ -1,6 +1,9 @@
 <div>
-{% for column in columns %}
-  <p>{{column['columnName']}}</p>
+{% for i  in range(board['columncnt'] -1) %}
+  <p>{{columns[i]['columnname']}}</p>
+  {% for task in tasks[i] %}
+    <p> {{ task['taskname'] }} </p>
+  {% endfor %}
 
 {% endfor %}
 </div>
