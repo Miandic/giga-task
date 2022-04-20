@@ -17,7 +17,7 @@ conn, cur = functions.set_connection(conn , cur)
 @app.route('/')
 def index(name = None):
     #проверка по кукуам что аккаунт войдён
-    #если нет, то
+    #если нет, то5
     if (request.cookies.get('login') != None):
         return  render_template('index.html')
     else:
