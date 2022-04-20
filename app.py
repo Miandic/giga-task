@@ -1,4 +1,4 @@
-from flask import Flask, redirect, request, render_template, make_response
+from flask import Flask, redirect, request, render_template, make_response, g
 import psycopg2
 import functions
 
@@ -8,8 +8,8 @@ app = Flask (__name__)
 conn = None
 cur = None
 command  = ""
-userId = 0
 
+userId = 0
 
 conn, cur = functions.set_connection(conn , cur)
 
@@ -63,10 +63,41 @@ def reg(name = None):
 def logout():
     return redirect('/login')
 
-@app.route('/board')
-def desk():
+@app.route('/boards', methods= ['GET', 'POST'])
+def boards():
     global userId
     boards = functions.get_boards(conn ,cur, userId)
-    return render_template('board.html', boards = boards)
+    return render_template('boards.html', boards = boards)
+
+@app.route('/board/<boardId>')
+def board(boardId):
+    print(boardId)
+    global conn
+    global cur
+    conn , cur = functions.set_connection(conn ,cur)
+    command = ("""
+select columnName, posOnBoard, boardCOlumn.id
+from boardColumn,  boards
+where boardColumn.boardId = %s
+ORDER BY posOnBoard
+""")
+
+    cur.execute(command, [boardId])
+    columns = functions.get_values(cur)
+    cur.execute("SELECT * from boards where id = %s ",  [boardId])
+    board = functions.get_values(cur)
+    board = board[0]
+    tasks = []
+    print(columns)
+    for i in range(1, int(board['columncnt']) +1):
+        command = """
+        select taskName, taskColour, taskContent, tasks.id , tasks.timetobedone
+        from tasks, boardColumn, boards
+        where tasks.boardId = boards.id and boardColumn.posOnBoard = %s and boardColumn.taskid = tasks.id
+        """
+        cur.execute(command, [i])
+        tasks.append(functions.get_values(cur))
+
+    return render_template('board.html', board = board, columns =columns, tasks = tasks )
 
 app.run()

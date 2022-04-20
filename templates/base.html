@@ -12,9 +12,18 @@
         <header>
             <div class="container">
                 <img class="logo" src="{{ url_for('static', filename='img/chad.webp')}}" alt="Лого">
+<<<<<<< HEAD
                 <h1 class="logo_txt1" onclick="location.href='/'">Giga</h1>
                 <h1 class="logo_txt2" onclick="location.href='/'">Task</h1>
                 {% block menu %}{% endblock %}
+=======
+                <h1 class="logo_txt">GigaTask</h1>
+            </div>
+            <div class="menu">
+                <a href="/" class="hbutton" id="1">Профиль</a>
+                <a href="/boards" class="hbutton" id="2">Мои доски</a>
+                <a href="/logout" class="hbutton" id="3">Выйти</a>
+>>>>>>> efae142f7d155633ebdb07e9007e05c9fd4cc5a8
             </div>
         </header>
         <div class="content">
