@@ -1,9 +1,6 @@
 <div>
-{% for column in colunms %}
-  <ul>
-  {% for task in colums['tasks'] %}
-    <li> task['name'] </li>
-  {% endfor %}
-  </ul>
+{% for column in columns %}
+  <p>{{column['columnName']}}</p>
+
 {% endfor %}
 </div>

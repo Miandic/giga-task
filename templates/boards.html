@@ -1,13 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
+
 <ul>
 {% for board in boards %}
-  <div  onclick="location.href='/board/{{ board['name'] }}.html'">
-    <p> {{board['name']}}</p>
 
+  <form methods = "POST">
 
-  </div>
-
+    <div  onclick="location.href='/board/{{ board['id'] }}'">
+      <p> {{board['name']}}</p>
+    </div>
+  </form>
 {% endfor %}
 </ul>
+
 {% endblock %}

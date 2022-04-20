@@ -1,4 +1,4 @@
-from flask import Flask, redirect, request, render_template, make_response
+from flask import Flask, redirect, request, render_template, make_response, g
 import psycopg2
 import functions
 
@@ -8,8 +8,8 @@ app = Flask (__name__)
 conn = None
 cur = None
 command  = ""
-userId = 0
 
+userId = 0
 
 conn, cur = functions.set_connection(conn , cur)
 
@@ -63,14 +63,27 @@ def reg(name = None):
 def logout():
     return redirect('/login')
 
-@app.route('/boards')
+@app.route('/boards', methods= ['GET', 'POST'])
 def boards():
     global userId
     boards = functions.get_boards(conn ,cur, userId)
     return render_template('boards.html', boards = boards)
 
-@app.route('/board/<boardName>')
-def board(boardName):
-    return boardName
+@app.route('/board/<boardId>')
+def board(boardId):
+    print(boardId)
+    global conn
+    global cur
+    conn , cur = functions.set_connection(conn ,cur)
+    command = ("""
+select columnName, posOnBoard, boardCOlumn.id
+from boardColumn,  boards
+where boardColumn.boardId = %s
+""")
+
+    cur.execute(command, [boardId])
+    columns = cur.fetchall()
+    print(columns)
+    return render_template('board.html', columns =columns )
 
 app.run()

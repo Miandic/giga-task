@@ -57,15 +57,24 @@ def get_tasks(conn ,cur, boardId):
 
 
 def get_users(conn, cur):
+
     if  conn == None or cur == None:
         conn, cur = set_connection(conn, cur)
-
     command = "SELECT * From users"
     cur.execute(command)
 
     ans = get_values(cur)
 
     return ans
+def get_board_user(conn , cur):
+    if  conn == None or cur == None:
+        conn, cur = set_connection(conn, cur)
+    command = """
+        select taskName, taskColour, taskContent, tasks.id , tasks.timetobedone
+        from tasks, boardColumn, boards
+        where tasks.boardId = boards.id and boardColumn.posOnBoard = '1' and boardColumn.taskid = tasks.id
+    """
+    
 
 def add_user(conn, cur, login, password, phn):
     if  conn == None or cur == None:
@@ -75,3 +84,5 @@ def add_user(conn, cur, login, password, phn):
     values = (login, login, password, int(phn))
 
     cur.execute(command, values)
+
+    conn.comit()
