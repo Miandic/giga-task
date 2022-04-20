@@ -15,11 +15,20 @@ conn, cur = functions.set_connection(conn , cur)
 
 
 @app.route('/')
-def index(name = None):
+def index(name = None, nick=None):
     #проверка по кукуам что аккаунт войдён
     #если нет, то5
     if (request.cookies.get('login') != None):
-        return  render_template('index.html')
+        name = request.cookies.get('login')
+        users = functions.get_users(conn, cur)
+        for user in users:
+            if user['login'] == name:
+                nick = user['nickname']
+                userId = user['id']
+        print(userId)
+        boards = functions.get_boards(conn, cur, userId)
+        print(boards)
+        return  render_template('index.html', name=name, nick=nick, boards=boards)
     else:
         return redirect('/login')
 
@@ -54,7 +63,7 @@ def reg(name = None):
         tempLogin = request.form['login']
         tempPassword = request.form['password']
         tempPhone = request.form['phone']
-        functions.add_user(conn, cur, tempLogin, tempPassword, tempPhone)
+        functions.add_user(conn, cur, tempLogin, tempLogin, tempPassword, tempPhone)
         return redirect('/login')
     else:
         return render_template('reg.html')

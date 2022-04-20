@@ -1,0 +1,199 @@
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;700&display=swap');
+*{
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+body{
+    margin: 0;
+    padding: 0;
+    background-color: #6B78B9;
+}
+header{
+    background-color: #5435B8;
+    position: sticky;
+}
+input[type="text"] {
+  font-family: inherit; /* 1 */
+  font-size: inherit; /* 1 */
+  line-height: inherit; /* 1 */
+  margin: 0; /* 2 */
+}
+.container{
+    width: 90%;
+    max-width: 1280px;
+    padding: 0 15px;
+    margin: 0 auto;
+}
+.logo{
+    display: inline-block;
+    margin: 0.5% auto auto 0.5%;
+    width: 4%;
+
+}
+.logo_txt1{
+    display: inline-block;
+    font-size: 225%;
+    margin: auto;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-weight: 900;
+    color: white;
+    cursor: pointer;
+
+}
+.logo_txt2{
+    display: inline-block;
+    font-size: 225%;
+    margin: auto auto 1vh auto;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    color: white;
+    font-weight: normal;
+    cursor: pointer;
+
+}
+.menu{
+    display: inline-block;
+    min-width: 300px;
+    margin: auto auto auto 10%;
+}
+.hbutton{
+    text-decoration: none;
+    color:white;
+    font-size: 115%;
+    font-family: 'Work Sans', sans-serif;
+    margin: auto 3%;
+
+}
+
+.hbutton:hover{
+    text-decoration: none;
+    color:#e0e0e0;
+    font-size: 115%;
+    font-family: 'Work Sans', sans-serif;
+    margin: auto 3%;
+
+}
+.login{
+    font-family: 'Work Sans', sans-serif;
+    border-radius: 5px;
+    background-color: #465383;
+    width: 40%;
+    text-align: center;
+    margin: auto;
+    padding: 0.375rem 0.75rem;
+    margin: 5% auto;
+}
+.login > h1{
+    color: white;
+}
+.login > a{
+    color: white;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: bold;
+    text-decoration: none;
+}
+.text-field__label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-family: 'Work Sans', sans-serif;
+    color: white;
+    text-size: 200%;
+    text-align: left;
+    margin-left: 5%;
+}
+/* стили для input */
+.text-field__input {
+    margin-left: auto;
+    margin-right: auto
+    display: block;
+    width: 85%;
+    height: calc(2.25rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #bdbdbd;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.text-field__input::placeholder {
+    color: #212529;
+    opacity: 0.4;
+}
+.button {
+    font-family: 'Work Sans', sans-serif;
+    border-radius: 3px;
+    margin: 5%;
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 12px 50px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+.menu_button {
+    font-family: 'Work Sans', sans-serif;
+    display: block;
+    width: 75%;
+    border-radius: 2px;
+    margin: 5% auto;
+    background-color: #6B78B9;
+    border: none;
+    color: white;
+    padding: 10px 5px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+}
+.menu_button:hover {
+    cursor: pointer;
+    background-color: #8596e8;
+
+}
+.lmenu{
+    display: inline-block;
+    width: 15%;
+    min-width: 150px;
+    background-color: #5435B8;
+    min-height: 90vh;
+}
+.avatar{
+    display: block;
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px #6B78B9, 0 0 13px #333;
+    margin:15% auto 5% auto;
+    width: 100px;
+    height: 100px;
+}
+.avatar:hover{
+    cursor: pointer;
+}
+.nick{
+    font-family: 'Work Sans', sans-serif;
+    font-size: 120%;
+    color: white;
+    display: block;
+    margin: 5% 8%;
+}
+.logintxt{
+    font-family: 'Work Sans', sans-serif;
+    color: #cecece;
+    display: block;
+    margin: 5% 8%;
+}
+.line{
+    width:100%;
+    color: #6B78B9;
+}
+.boardList{
+    display: inline-block;
+    vertical-align: top;
+}

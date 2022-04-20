@@ -76,12 +76,12 @@ def get_board_user(conn , cur):
     """
 
 
-def add_user(conn, cur, login, password, phn):
+def add_user(conn, cur, login, nickName,  password, phn):
     if  conn == None or cur == None:
         conn, cur = set_connection(conn, cur)
 
     command = """INSERT INTO USERS(login, nickname, password, phonenumber) values(%s, %s, %s,%s)"""
-    values = (login, login, password, int(phn))
+    values = (login, nickName, password, int(phn))
 
     cur.execute(command, values)
 
