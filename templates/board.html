@@ -1,13 +1,9 @@
-{% extends 'base.html' %}
-{% block content %}
-<ul>
-{% for board in boards %}
-  <div  onclick="location.href='board/{{ board }}.html">
-    <p> {{board['name']}}</p>
-
-    <input type = "sybmit" >
-  </div>
-
+<div>
+{% for column in colunms %}
+  <ul>
+  {% for task in colums['tasks'] %}
+    <li> task['name'] </li>
+  {% endfor %}
+  </ul>
 {% endfor %}
-</ul>
-{% endblock %}
+</div>

@@ -63,10 +63,14 @@ def reg(name = None):
 def logout():
     return redirect('/login')
 
-@app.route('/board')
-def desk():
+@app.route('/boards')
+def boards():
     global userId
     boards = functions.get_boards(conn ,cur, userId)
-    return render_template('board.html', boards = boards)
+    return render_template('boards.html', boards = boards)
+
+@app.route('/board/<boardName>')
+def board(boardName):
+    return boardName
 
 app.run()
