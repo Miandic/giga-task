@@ -4,11 +4,16 @@
     <img onclick="location.href='/uploadAv'" class="avatar" src="{{url_for('static', filename='img/avs/chad.webp')}}" alt="Аватар">
     <p class="nick">{{nick}}</p>
     <p class="logintxt">{{name}}</p>
-    <div class="line"/>
+    <div class="line"></div>
     <p class="menu_button" onclick="location.href='t.me/...'">Бот телеграмм</p>
-    <p class="menu_button" onclick="location.href='/newDesk'">Создать доску</p>
+    <p class="menu_button" onclick="location.href='/newBoard'">Создать доску</p>
     <p class="menu_button" onclick="location.href='/profile'">Редактировать профиль</p>
     <p class="menu_button" onclick="location.href='/theme'">Сменить тему</p>
     <p class="menu_button" onclick="location.href='/logout'">Выйти</p>
+</div>
+<div class="boardList">
+    {% for board in boards %}
+    <p>{{board['name']}}</p>
+    {% endfor %}
 </div>
 {% endblock %}

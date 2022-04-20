@@ -189,3 +189,11 @@ input[type="text"] {
     display: block;
     margin: 5% 8%;
 }
+.line{
+    width:100%;
+    color: #6B78B9;
+}
+.boardList{
+    display: inline-block;
+    vertical-align: top;
+}

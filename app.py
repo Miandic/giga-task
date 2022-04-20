@@ -16,8 +16,6 @@ conn, cur = functions.set_connection(conn , cur)
 
 @app.route('/')
 def index(name = None, nick=None):
-    global connn
-    global cur
     #проверка по кукуам что аккаунт войдён
     #если нет, то5
     if (request.cookies.get('login') != None):
@@ -26,15 +24,17 @@ def index(name = None, nick=None):
         for user in users:
             if user['login'] == name:
                 nick = user['nickname']
-        return  render_template('index.html', name=name, nick=nick)
+                userId = user['id']
+        print(userId)
+        boards = functions.get_boards(conn, cur, userId)
+        print(boards)
+        return  render_template('index.html', name=name, nick=nick, boards=boards)
     else:
         return redirect('/login')
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login(valid= None):
-    global connn
-    global cur
     global userId
     if request.method == 'POST':
         tempLogin = request.form['login']
