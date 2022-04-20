@@ -15,17 +15,26 @@ conn, cur = functions.set_connection(conn , cur)
 
 
 @app.route('/')
-def index(name = None):
+def index(name = None, nick=None):
+    global connn
+    global cur
     #проверка по кукуам что аккаунт войдён
     #если нет, то5
     if (request.cookies.get('login') != None):
-        return  render_template('index.html')
+        name = request.cookies.get('login')
+        users = functions.get_users(conn, cur)
+        for user in users:
+            if user['login'] == name:
+                nick = user['nickname']
+        return  render_template('index.html', name=name, nick=nick)
     else:
         return redirect('/login')
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login(valid= None):
+    global connn
+    global cur
     global userId
     if request.method == 'POST':
         tempLogin = request.form['login']
@@ -54,7 +63,7 @@ def reg(name = None):
         tempLogin = request.form['login']
         tempPassword = request.form['password']
         tempPhone = request.form['phone']
-        functions.add_user(conn, cur, tempLogin, tempPassword, tempPhone)
+        functions.add_user(conn, cur, tempLogin, tempLogin, tempPassword, tempPhone)
         return redirect('/login')
     else:
         return render_template('reg.html')

@@ -169,10 +169,23 @@ input[type="text"] {
     display: block;
     border-radius: 50%;
     box-shadow: 0 0 0 3px #6B78B9, 0 0 13px #333;
-    margin:15% auto;
+    margin:15% auto 5% auto;
     width: 100px;
     height: 100px;
 }
 .avatar:hover{
     cursor: pointer;
+}
+.nick{
+    font-family: 'Work Sans', sans-serif;
+    font-size: 120%;
+    color: white;
+    display: block;
+    margin: 5% 8%;
+}
+.logintxt{
+    font-family: 'Work Sans', sans-serif;
+    color: #cecece;
+    display: block;
+    margin: 5% 8%;
 }
