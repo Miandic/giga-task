@@ -1,5 +1,6 @@
 import psycopg2
 import psycopg2.extras
+import secret
 
 conn = None
 cur = None
@@ -7,10 +8,10 @@ cur = None
 command = ""
 
 def set_connection(conn, cur):
-    conn = psycopg2.connect(user="postgres", password="123",
-                                  host="127.0.0.1",
-                                  port="5432",
-                                  database="Poggers")
+    conn = psycopg2.connect(user=secret.DBuser, password=secret.DBpassword,
+                                  host=secret.DBhost,
+                                  port=secret.DBport,
+                                  database="alpha")
     cur = conn.cursor(cursor_factory = psycopg2.extras.DictCursor)
     return (conn , cur)
 def close_connection(conn , cur):
