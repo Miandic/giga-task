@@ -1,6 +1,8 @@
-from flask import Flask, redirect, request, render_template, make_response, g
+from flask import Flask, redirect, request, render_template, make_response
 import psycopg2
 import functions
+import request
+from bot import
 
 app = Flask (__name__)
 
@@ -15,6 +17,7 @@ userBoardId = 0
 columnId = 0
 conn, cur = functions.set_connection(conn , cur)
 
+    
 
 @app.route('/', methods=['GET', 'POST'])
 def index(name=None, nick=None, create='true', other = None):
