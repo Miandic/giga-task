@@ -1,7 +1,8 @@
 from flask import Flask, redirect, request, render_template, make_response
 import psycopg2
 import functions
-import request
+import requests
+import secret
 from bot import getChat
 
 app = Flask (__name__)
@@ -17,6 +18,19 @@ userBoardId = 0
 columnId = 0
 conn, cur = functions.set_connection(conn , cur)
 
+
+def sendAlarm(user, message):
+    chat = getChat(user)
+    if chat == 'Sorry':
+        print('Aboba')
+        return 'AlarmOff'
+    else:
+        url = "https://api.telegram.org/bot" + secret.TOKEN + "/sendMessage?chat_id=" + str(chat) + "&text=" + message
+        print(url)
+        res = requests.get(url)
+        print(res)
+
+sendAlarm(8, 'Ебать ты...')
 
 
 @app.route('/', methods=['GET', 'POST'])

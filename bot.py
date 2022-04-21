@@ -47,8 +47,10 @@ def getChat(Id):
     global userData
     for k, v in userData.items():
         if v['baseId'] == str(Id):
-            return userData[k]['chat']
-
+            if v['alarm'] == 'True':
+                return userData[k]['chat']
+            else:
+                return 'Sorry'
 
 
 def checkLogin(Id):
@@ -102,9 +104,9 @@ async def help(message: types.Message):
     userId = message.from_user.id
     user = userData[str(userId)]
     print(user)
-    if user['alarm'] == False:
+    if user['alarm'] == 'False':
         await message.answer("Уведомления: выключенны❌", reply_markup=unmute_kb)
-    elif user['alarm'] == True:
+    elif user['alarm'] == 'True':
         await message.answer("Уведомления: включены✅", reply_markup=mute_kb)
 
 
@@ -112,7 +114,7 @@ async def help(message: types.Message):
 async def unmute(message: types.Message):
     global userData
     userId = message.from_user.id
-    userData[str(userId)]['alarm'] = True
+    userData[str(userId)]['alarm'] = 'True'
     with open("data.json",'w') as f:
         dump(userData, f)
     await message.reply("Уведомления включенны!")
@@ -122,7 +124,7 @@ async def unmute(message: types.Message):
 async def mute(message: types.Message):
     global userData
     userId = message.from_user.id
-    userData[str(userId)]['alarm'] = False
+    userData[str(userId)]['alarm'] = 'False'
     with open("data.json",'w') as f:
         dump(userData, f)
     await message.reply("Уведомления выключенны!")
