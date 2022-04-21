@@ -14,11 +14,18 @@ from aiogram.utils import executor
 button_login = KeyboardButton('Войти в аккаунт🥸')
 button_unmute = KeyboardButton('Включить уведомления✅')
 button_mute = KeyboardButton('Выключить уведомления❌')
-button_back = KeyboardButton('К списку досок🔙')
+button_logout = KeyboardButton('Выйти из аккаунта🚪')
+button_main = KeyboardButton('На главную◀️')
+button_help = KeyboardButton('О проектеℹ️')
 
-mute_kb = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).add(button_mute)
-unmute_kb = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).add(button_unmute)
+mute_buttons = [button_mute, button_logout, button_help]
+unmute_buttons = [button_unmute, button_logout, button_help]
+
+main_kb = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).add(button_main)
+mute_kb = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).add(*mute_buttons)
+unmute_kb = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).add(*unmute_buttons)
 login_kb = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).add(button_login)
+goBack_kb = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).add(button_main)
 
 userData = None
 with open('data.json') as json_file:
@@ -47,8 +54,15 @@ def getChat(Id):
     global userData
     for k, v in userData.items():
         if v['baseId'] == str(Id):
+<<<<<<< HEAD
             return userData[k]['chat']
 
+=======
+            if v['alarm'] == 'True':
+                return userData[k]['chat']
+            else:
+                return 'Sorry'
+>>>>>>> bfe33f650d345b440830aabf4d7ccb5a5705c25a
 
 
 def checkLogin(Id):
@@ -77,55 +91,48 @@ def logoutUser(Id):
     print("logOut!")
 
 
-
+@dp.message_handler(lambda message: message.text =="На главную◀️")
 @dp.message_handler(commands=['start'])
 async def msg_welcome(message: types.Message):
     userId = message.from_user.id
     userName = message.from_user.first_name
-    buttons = [
-        types.InlineKeyboardButton(text="Сайт GigaTask", url="https://github.com/miandic/BigFlaskPoggers"),
-        types.InlineKeyboardButton(text="Репозиторий на GitHub", url="https://github.com/miandic/BigFlaskPoggers"),
-        types.InlineKeyboardButton(text="Выйти из аккаунта", callback_data="logout")
-    ]
-    keyboard = types.InlineKeyboardMarkup(row_width=1)
-    keyboard.add(*buttons)
     if checkLogin(userId):
-        user = getUser(userId)
-        await message.answer("Приветствую, " + user['nickname'] + "!\nЯ всё ещё бот-гигачад от лучшей kanban-доски GigaTask\n\nЕсли вам нужна какая-то помощь, просто напишите /help", reply_markup=keyboard)
+        user = userData[str(userId)]
+        if user['alarm'] == 'False':
+            user = getUser(userId)
+            await message.answer("Приветствую, " + user['nickname'] + "!\nЯ всё ещё бот-гигачад от лучшей kanban-доски GigaTask\nУведомления: выключенны❌\n\nЕсли вам нужна какая-то помощь, напишите /help", reply_markup=unmute_kb)
+        elif user['alarm'] == 'True':
+            user = getUser(userId)
+            await message.answer("Приветствую, " + user['nickname'] + "!\nЯ всё ещё бот-гигачад от лучшей kanban-доски GigaTask\nУведомления: включены✅", reply_markup=mute_kb)
     else:
         await message.answer("Приветствую, " + userName + "!\nЯ бот-гигачад от лучшей kanban-доски GigaTask\nЧтобы войти в ваш аккаунт, используйте кнопку ниже", reply_markup=login_kb)
 
-
+@dp.message_handler(lambda message: message.text =="О проектеℹ️")
 @dp.message_handler(commands=['help'])
 async def help(message: types.Message):
-    global userData
-    userId = message.from_user.id
-    user = userData[str(userId)]
-    print(user)
-    if user['alarm'] == False:
-        await message.answer("Уведомления: выключенны❌", reply_markup=unmute_kb)
-    elif user['alarm'] == True:
-        await message.answer("Уведомления: включены✅", reply_markup=mute_kb)
+    await message.answer("GigaTask это канбан-доска для гигачадов, разработанная командой Неизвестен-Без названия на хакатоне с 18.04.22-22.04.22\n\nРепозиторий на GitHub - https://github.com/miandic/BigFlaskPoggers", reply_markup=goBack_kb)
 
 
 @dp.message_handler(lambda message: message.text =="Включить уведомления✅")
 async def unmute(message: types.Message):
     global userData
     userId = message.from_user.id
-    userData[str(userId)]['alarm'] = True
+    userData[str(userId)]['alarm'] = 'True'
     with open("data.json",'w') as f:
         dump(userData, f)
     await message.reply("Уведомления включенны!")
+    await msg_welcome(message)
 
 
 @dp.message_handler(lambda message: message.text =="Выключить уведомления❌")
 async def mute(message: types.Message):
     global userData
     userId = message.from_user.id
-    userData[str(userId)]['alarm'] = False
+    userData[str(userId)]['alarm'] = 'False'
     with open("data.json",'w') as f:
         dump(userData, f)
     await message.reply("Уведомления выключенны!")
+    await msg_welcome(message)
 
 
 @dp.message_handler(lambda message: message.text =="Войти в аккаунт🥸")
@@ -138,7 +145,7 @@ async def login(message: types.Message):
         await message.answer("Введите ваш логин:\nОтмена: /cancel")
 
 
-@dp.callback_query_handler(text="logout")
+@dp.message_handler(lambda message: message.text =="Выйти из аккаунта🚪")
 async def logout(message: types.Message):
     userId = message.from_user.id
     if checkLogin(userId):
@@ -146,7 +153,7 @@ async def logout(message: types.Message):
         await message.answer("Вы вышли из аккаунта!")
     else:
         await message.answer("Вы не в аккаунте!")
-
+    await msg_welcome(message)
 
 @dp.message_handler(state='*', commands='cancel')
 @dp.message_handler(Text(equals='отмена', ignore_case=True), state='*')
@@ -157,6 +164,7 @@ async def cancel_handler(message: types.Message, state: FSMContext):
 
     await state.finish()
     await message.answer('Как скажешь, так и будет')
+    await msg_welcome(message)
 
 
 @dp.message_handler(state=User.login)
@@ -198,6 +206,7 @@ async def process_name(message: types.Message, state: FSMContext):
     else:
         logoutUser(userId)
         await message.answer("Чё-то не сходится!")
+    await msg_welcome(message)
     await state.finish()
 
 
