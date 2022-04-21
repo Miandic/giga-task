@@ -185,7 +185,7 @@ def edit_tasks(conn, cur, taskId, userid, boardid, taskname, timetobedone, taskc
     where  id = %s
     """
 
-    values = ( userid, boardid, userright, boardid , taskname, timetobedone, taskcontent, taskcolour, taskId    )
+    values = ( userid, boardid, userright, boardid, taskname, timetobedone, taskcontent, taskcolour, taskId    )
 
     cur.execute(command, values)
     conn.commit()
@@ -199,3 +199,25 @@ def delete(conn, cur, tableName, elementId):
 
     cur.execute(command, values)
     conn.commit()
+
+def getStatUser(conn, cur, boardId,  userId):
+    if  conn == None or cur == None:
+        conn, cur = set_connection(conn, cur)
+
+    command = f"""
+        select columnname, id
+        from boardColumn
+        where boardid = {boardId}
+    """
+
+    cur.execute(command)
+    columns = get_values(cur)
+    stat = {}
+    for column in columns:
+        command = f"""
+            select COUNT(*)
+            from tasks
+            where tasks.columnId = {column['id']} AND tasks.userid = {userId}
+        """
+        cur.execute(command)
+        stat[column['columnname']] = cur.fetchall()[0][0]

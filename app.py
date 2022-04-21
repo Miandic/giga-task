@@ -1,6 +1,8 @@
 from flask import Flask, redirect, request, render_template, make_response
 import psycopg2
 import functions
+import requests
+#from bot import getChat
 
 app = Flask (__name__)
 
@@ -13,7 +15,6 @@ userId = 0
 userBoardId = 0
 columnId = 0
 conn, cur = functions.set_connection(conn , cur)
-
 
 @app.route('/', methods=['GET', 'POST'])
 def index(name=None, nick=None, create='true', other = None):

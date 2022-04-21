@@ -43,6 +43,14 @@ storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 
 
+def getChat(Id):
+    global userData
+    for k, v in userData.items():
+        if v['baseId'] == str(Id):
+            return userData[k]['chat']
+
+
+
 def checkLogin(Id):
     global userData
     for login in userData.keys():
@@ -50,7 +58,7 @@ def checkLogin(Id):
             print("Match!")
             return True
     return False
-    
+
 
 def getUser(Id):
     global userData
