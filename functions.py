@@ -119,6 +119,7 @@ def add_board_for_user(conn, cur, userId,  boardName):
     cur.execute(command, values)
     cur.execute("select * from boards where userId = %s and  name = %s and userright = 'creator'" , [userId, boardName])
     board = get_values(cur)
+            
     board = board[0]
     command =  """
     insert Into boardColumn(columnName, boardid, posOnBoard) values

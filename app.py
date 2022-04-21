@@ -31,7 +31,11 @@ def index(name=None, nick=None, create='true', other = None):
         boards = functions.get_boards(conn, cur, userId)
         print(boards)
         if request.method == 'POST':
-            newBoardId = functions.add_board_for_user(conn, cur, userId, 'Новый автомат')
+            nameBoard = 'Новый автомат'
+            if (len(boards) >= 1):
+                nameBoard = nameBoard + ' ' +  str(len(boards))
+
+            newBoardId = functions.add_board_for_user(conn, cur, userId, nameBoard)
             redir = '/board/' + str(newBoardId)
             return redirect(redir)
         for board in boards:
@@ -102,17 +106,18 @@ def board(boardId):
     conn, cur = functions.set_connection(conn ,cur)
     command = ("""
         select columnName, posOnBoard, boardColumn.id
-        from boardColumn,  boards
+        from boardColumn
         where boardColumn.boardId = %s
         ORDER BY posOnBoard
     """)
     cur.execute(command, [boardId])
     columns = functions.get_values(cur)
+    print(columns)
+
     cur.execute("SELECT * from boards where id = %s ",  [boardId])
     board = functions.get_values(cur)
     board = board[0]
     tasks = []
-    print(columns)
     for i in range(1, int(board['columncnt']) +1):
         command = """
             select taskName, taskColour, taskContent, tasks.id , tasks.timetobedone
