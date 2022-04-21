@@ -1,5 +1,4 @@
-{% extends 'base.html' %}
-{% block menu %}
+
 <form  method="post" action={{url}}>
   {% for input in inputs %}
     <input type="text" name={{input}} />
@@ -8,4 +7,3 @@
   <input type="submit" >
   <p  onclick="location.href='/logout'">Выйти</p>
 </form>
-{% endblock %}

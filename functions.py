@@ -87,22 +87,21 @@ def add_user(conn, cur, login, nickName,  password, phn):
     conn.commit()
 
 
-def add_task(conn, cur, userid, boardid, taskname, timetobedone, taskcontent, taskcolour):
+def add_task(conn, cur, userid, boardid, columnId, taskname, timetobedone, taskcontent, taskcolour):
     if  conn == None or cur == None:
         conn, cur = set_connection(conn, cur)
-
-    command = """INSERT INTO TASKS(userid, boardid, taskname, timetobedone, taskcontent, taskcolour) values(%s, %s, %s, %s, %s, %s)"""
-    values = (userid, boardid, taskname, timetobedone, taskcontent, taskcolour)
+    command = """INSERT INTO TASKS(userid, boardid, columnid, taskname, timetobedone, taskcontent, taskcolour) values(%s, %s,%s, %s, %s, %s, %s)"""
+    values = (userid, boardid, columnId, taskname, timetobedone, taskcontent, taskcolour)
 
     cur.execute(command, values)
     conn.commit()
 
 
-def add_boardColumn(conn, cur, name, taskid, boardid, posOnBoard ):
+def add_boardColumn(conn, cur, name, boardid, posOnBoard ):
     if  conn == None or cur == None:
         conn, cur = set_connection(conn, cur)
 
-    command = """INSERT INTO boardCOlumn(name, taskid, boardid, posOnBoard) values(%s, %s, %s, %s)"""
+    command = """INSERT INTO boardCOlumn(name, boardid, posOnBoard) values(%s, %s, %s)"""
     values = (name, taskid, boardid, posOnBoard)
 
     cur.execute(command, values)
@@ -114,10 +113,13 @@ def add_board_for_user(conn, cur, userId,  boardName):
 
     command = """INSERT INTO Boards(userId, name, userright, columncnt ) VALUES(%s, %s, 'creator',  3) """
     values = (userId, boardName)
-
-
     cur.execute(command, values)
+
+    conn.commit()
+
     cur.execute("select * from boards where userId = %s and  name = %s and userright = 'creator'" , [userId, boardName])
+    conn.commit()
+
     board = get_values(cur)
 
     board = board[0]
@@ -162,6 +164,8 @@ def edit_board(conn ,cur, boardid ,  name, columncnt, userright, userid ):
 def edit_boardColumn(conn, cur, columnId, name, taskid, boardid, posOnBoard ):
     if  conn == None or cur == None:
         conn, cur = set_connection(conn, cur)
+
+
     command = """UPDATE boards
     set columnname = %s, taskid = %s, boardid = %s, posOnBoard = %s
     where  id = %s

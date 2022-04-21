@@ -9,7 +9,8 @@
 
   {% endfor %}
   <form method="POST">
-  <input  type='submit' value="Добавить задание" >
+    <input name ='columnId' type="text" value={{columns[i]['id']}}>
+  <input name = "button"  type='submit' value="Добавить задание" >
   </form>
 {% endfor %}
 </div>

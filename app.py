@@ -12,6 +12,7 @@ cur = None
 command  = ""
 userId = 0
 userBoardId = 0
+columnId = 0
 conn, cur = functions.set_connection(conn , cur)
 
 
@@ -108,6 +109,7 @@ def board(boardId):
     global cur
     global inputs
     global userBoardId
+    global columnId
     userBoardId = boardId
     conn, cur = functions.set_connection(conn ,cur)
     command = ("""
@@ -128,15 +130,16 @@ def board(boardId):
     for i in range(1, int(board['columncnt']) +1):
         command = """
             select taskName, taskColour, taskContent, tasks.id , tasks.timetobedone
-            from tasks, boardColumn, boards
-            where tasks.boardId = boards.id and boardColumn.posOnBoard = %s and boardColumn.taskid = tasks.id
+            from tasks
+            where tasks.boardId = %s  and tasks.columnid = %s
         """
-        cur.execute(command, [i])
+        cur.execute(command, [userBoardId, columns[i-1]['id']])
         tasks.append(functions.get_values(cur))
     if request.method == 'POST':
+        columnId = request.form['columnId']
         inputs = ['taskname' , 'timedobedone' , 'taskContent', 'taskcolour']
         return redirect('/temp')
-    print()
+    print(tasks)
     return render_template('board.html', board=board, columns=columns, tasks=tasks )
 
 @app.route('/temp', methods = ["POST" , "GET"])
@@ -144,15 +147,16 @@ def temp():
     global  inputs
     global userId
     global userBoardId
+    global columnId
     if request.method == 'POST':
         taskName = request.form['taskname']
         timedobedone = request.form['timedobedone']
         taskContent = request.form['taskContent']
         taskcolour = request.form['taskcolour']
 
-        functions.add_task(conn, cur, userId, userBoardId, taskName, timedobedone, taskContent, taskcolour)
+        functions.add_task(conn, cur, userId, userBoardId, columnId, taskName, timedobedone, taskContent, taskcolour)
         return redirect(f'board\{userBoardId}')
     else :
         return render_template('temp.html' , inputs = inputs)
 
-app.run()
+app.run(debug = True)
