@@ -1,10 +1,10 @@
 import psycopg2
+from psycopg2 import sql
 import psycopg2.extras
 import secret
 
 conn = None
 cur = None
-
 command = ""
 
 def set_connection(conn, cur):
@@ -81,7 +81,7 @@ def add_user(conn, cur, login, nickName,  password, phn):
         conn, cur = set_connection(conn, cur)
 
     command = """INSERT INTO USERS(login, nickname, password, phonenumber) values(%s, %s, %s,%s)"""
-    values = (login, nickName, password, int(phn))
+    values = (login, nickName, password, phn)
 
     cur.execute(command, values)
     conn.commit()
@@ -112,7 +112,7 @@ def add_board_for_user(conn, cur, userId,  boardName):
     if  conn == None or cur == None:
         conn, cur = set_connection(conn, cur)
 
-    command = """INSERT INTO Boards(userId, name, userright, columncnt ) VALUES(%s, %s, "creator",  3) """
+    command = """INSERT INTO Boards(userId, name, userright, columncnt ) VALUES(%s, %s, 'creator',  3) """
     values = (userId, boardName)
 
 
@@ -122,13 +122,15 @@ def add_board_for_user(conn, cur, userId,  boardName):
     board = board[0]
     command =  """
     insert Into boardColumn(columnName, boardid, posOnBoard) values
-    (to-do, %s, 1),
-    (in-progress, %s, 2),
-    (done, %s, 3),
+    ('to-do', %s, 1),
+    ('in-progress', %s, 2),
+    ('done', %s, 3)
     """
+
     values = (board['id'], board['id'],board['id'])
     cur.execute(command,values)
     conn.commit()
+    return board['id']
 
 def edit_user(conn, cur, userid, login, nickname, password, phonenumber):
     if  conn == None or cur == None:
@@ -192,4 +194,3 @@ def delete(conn, cur, tableName, elementId):
 
     cur.execute(command, values)
     conn.commit()
-    

@@ -8,26 +8,32 @@ app = Flask (__name__)
 conn = None
 cur = None
 command  = ""
-
 userId = 0
-
 conn, cur = functions.set_connection(conn , cur)
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index(name=None, nick=None, create='true', other = None):
     #проверка по кукуам что аккаунт войдён
     #если нет, то
     if (request.cookies.get('login') != None):
+        flag = False
         name = request.cookies.get('login')
         users = functions.get_users(conn, cur)
         for user in users:
             if user['login'] == name:
                 nick = user['nickname']
                 userId = user['id']
+                flag = True
+        if (not flag):
+            return redirect('/login')
         print(userId)
         boards = functions.get_boards(conn, cur, userId)
         print(boards)
+        if request.method == 'POST':
+            newBoardId = functions.add_board_for_user(conn, cur, userId, 'Новый автомат')
+            redir = '/board/' + str(newBoardId)
+            return redirect(redir)
         for board in boards:
             if board['userright'] == 'creator':
                 create = None
@@ -36,6 +42,7 @@ def index(name=None, nick=None, create='true', other = None):
         print(create)
         return  render_template('index.html', name=name, nick=nick, boards=boards, create=create, other=other)
     else:
+
         return redirect('/login')
 
 
@@ -74,9 +81,11 @@ def reg(name = None):
     else:
         return render_template('reg.html')
 
+
 @app.route('/logout')
 def logout():
     return redirect('/login')
+
 
 @app.route('/boards', methods= ['GET', 'POST'])
 def boards():
@@ -84,19 +93,19 @@ def boards():
     boards = functions.get_boards(conn ,cur, userId)
     return render_template('boards.html', boards = boards)
 
+
 @app.route('/board/<boardId>')
 def board(boardId):
-    print(boardId)
     global conn
     global cur
-    conn , cur = functions.set_connection(conn ,cur)
+    print(boardId)
+    conn, cur = functions.set_connection(conn ,cur)
     command = ("""
-select columnName, posOnBoard, boardCOlumn.id
-from boardColumn,  boards
-where boardColumn.boardId = %s
-ORDER BY posOnBoard
-""")
-
+        select columnName, posOnBoard, boardColumn.id
+        from boardColumn,  boards
+        where boardColumn.boardId = %s
+        ORDER BY posOnBoard
+    """)
     cur.execute(command, [boardId])
     columns = functions.get_values(cur)
     cur.execute("SELECT * from boards where id = %s ",  [boardId])
@@ -106,13 +115,13 @@ ORDER BY posOnBoard
     print(columns)
     for i in range(1, int(board['columncnt']) +1):
         command = """
-        select taskName, taskColour, taskContent, tasks.id , tasks.timetobedone
-        from tasks, boardColumn, boards
-        where tasks.boardId = boards.id and boardColumn.posOnBoard = %s and boardColumn.taskid = tasks.id
+            select taskName, taskColour, taskContent, tasks.id , tasks.timetobedone
+            from tasks, boardColumn, boards
+            where tasks.boardId = boards.id and boardColumn.posOnBoard = %s and boardColumn.taskid = tasks.id
         """
         cur.execute(command, [i])
         tasks.append(functions.get_values(cur))
 
-    return render_template('board.html', board = board, columns =columns, tasks = tasks )
+    return render_template('board.html', board=board, columns=columns, tasks=tasks )
 
 app.run()

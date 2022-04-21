@@ -153,10 +153,27 @@ input[type="text"] {
     text-decoration: none;
     font-size: 16px;
 }
+.menu_button_input{
+    font-family: 'Work Sans', sans-serif;
+    display: block;
+    width: 80%;
+    border-radius: 2px;
+    margin: 5% auto;
+    background-color: #5435B8;
+    border: none;
+    color: white;
+    padding: 10px 5px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+}
 .menu_button:hover {
     cursor: pointer;
     background-color: #8596e8;
-
+}
+.menu_button_input:hover {
+    cursor: pointer;
+    background-color: #8596e8;
 }
 .lmenu{
     display: inline-block;
@@ -237,7 +254,7 @@ input[type="text"] {
     color: white;
     font-style: bold;
 }
-.yours > p{
+.yourp{
     display: inline-block;
     min-width: 20vw;
     margin: 2%;
@@ -249,8 +266,9 @@ input[type="text"] {
     color: white;
     font-size: 125%;
     cursor: pointer;
+    border: none;
 }
-.yours > p:hover{
+.yourp:hover{
     background-color: #8596e8;
 }
 .other{

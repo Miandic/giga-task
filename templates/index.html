@@ -5,17 +5,23 @@
     <p class="nick">{{nick}}</p>
     <p class="logintxt">{{name}}</p>
     <div class="line"></div>
-    <p class="menu_button" onclick="location.href='t.me/...'">Бот телеграмм</p>
-    <p class="menu_button" onclick="location.href='/newBoard'">Создать доску</p>
-    <p class="menu_button" onclick="location.href='/profile'">Редактировать профиль</p>
-    <p class="menu_button" onclick="location.href='/theme'">Сменить тему</p>
-    <p class="menu_button" onclick="location.href='/logout'">Выйти</p>
+        <p class="menu_button" onclick="location.href='t.me/...'">Бот телеграмм</p>
+        <form  method="post">
+        <input class="menu_button_input" type='submit' value="Создать доску">
+        </form>
+        <p class="menu_button" onclick="location.href='/profile'">Редактировать профиль</p>
+        <p class="menu_button" onclick="location.href='/theme'">Сменить тему</p>
+        <p class="menu_button" onclick="location.href='/logout'">Выйти</p>
 </div>
 <div class="boardList">
     <div class="yours">
         <h1>Ваши доски:</h1>
         {% if create == 'true' %}
-        <p onclick="location.href='/newBoard'">Создайте новую доску!</p>
+        <form method="post">
+            <form  method="post">
+            <input class="yourp" type='submit' value="Создайте новую доску!">
+            </form>
+        </form>
         {% endif %}
         {% for board in boards %}
         {% if board['userright'] == 'creator'%}

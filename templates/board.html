@@ -1,5 +1,7 @@
+{% extends 'base.html' %}
+{% block content %}
 <div>
-{% for i  in range(board['columncnt'] -1) %}
+{% for i  in range(board['columncnt']) %}
   <p>{{columns[i]['columnname']}}</p>
   {% for task in tasks[i] %}
     <p> {{ task['taskname'] }} </p>
@@ -7,3 +9,4 @@
 
 {% endfor %}
 </div>
+{% endblock %}
