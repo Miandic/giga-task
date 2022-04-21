@@ -91,7 +91,7 @@ def add_task(conn, cur, userid, boardid, taskname, timetobedone, taskcontent, ta
     if  conn == None or cur == None:
         conn, cur = set_connection(conn, cur)
 
-    command = """INSERT INTO USERS(userid, boardid, taskname, timetobedone, taskcontent, taskcolour) values(%s, %s, %s, %s, %s, %s)"""
+    command = """INSERT INTO TASKS(userid, boardid, taskname, timetobedone, taskcontent, taskcolour) values(%s, %s, %s, %s, %s, %s)"""
     values = (userid, boardid, taskname, timetobedone, taskcontent, taskcolour)
 
     cur.execute(command, values)
@@ -102,7 +102,7 @@ def add_boardColumn(conn, cur, name, taskid, boardid, posOnBoard ):
     if  conn == None or cur == None:
         conn, cur = set_connection(conn, cur)
 
-    command = """INSERT INTO USERS(name, taskid, boardid, posOnBoard) values(%s, %s, %s, %s)"""
+    command = """INSERT INTO boardCOlumn(name, taskid, boardid, posOnBoard) values(%s, %s, %s, %s)"""
     values = (name, taskid, boardid, posOnBoard)
 
     cur.execute(command, values)
@@ -119,7 +119,7 @@ def add_board_for_user(conn, cur, userId,  boardName):
     cur.execute(command, values)
     cur.execute("select * from boards where userId = %s and  name = %s and userright = 'creator'" , [userId, boardName])
     board = get_values(cur)
-            
+
     board = board[0]
     command =  """
     insert Into boardColumn(columnName, boardid, posOnBoard) values
@@ -190,8 +190,8 @@ def delete(conn, cur, tableName, elementId):
     if  conn == None or cur == None:
         conn, cur = set_connection(conn, cur)
 
-    command = "DELETE FROM %s WHERE id = %s"
-    values = (tableName,  elementId)
+    command = f"DELETE FROM {tableName} WHERE id = {elementId}"
+    values = (elementId)
 
     cur.execute(command, values)
     conn.commit()

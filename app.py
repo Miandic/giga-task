@@ -5,17 +5,21 @@ import functions
 app = Flask (__name__)
 
 
+inputs = []
+urlForTemp = ""
 conn = None
 cur = None
 command  = ""
 userId = 0
+userBoardId = 0
 conn, cur = functions.set_connection(conn , cur)
 
 
 @app.route('/', methods=['GET', 'POST'])
 def index(name=None, nick=None, create='true', other = None):
     #проверка по кукам что аккаунт войдён
-    #если нет, то
+    #если нет, то\
+    global userId
     if (request.cookies.get('login') != None):
         flag = False
         name = request.cookies.get('login')
@@ -98,11 +102,13 @@ def boards():
     return render_template('boards.html', boards = boards)
 
 
-@app.route('/board/<boardId>')
+@app.route('/board/<boardId>', methods= ['GET' , "POST"])
 def board(boardId):
     global conn
     global cur
-    print(boardId)
+    global inputs
+    global userBoardId
+    userBoardId = boardId
     conn, cur = functions.set_connection(conn ,cur)
     command = ("""
         select columnName, posOnBoard, boardColumn.id
@@ -118,6 +124,7 @@ def board(boardId):
     board = functions.get_values(cur)
     board = board[0]
     tasks = []
+    \
     for i in range(1, int(board['columncnt']) +1):
         command = """
             select taskName, taskColour, taskContent, tasks.id , tasks.timetobedone
@@ -126,7 +133,26 @@ def board(boardId):
         """
         cur.execute(command, [i])
         tasks.append(functions.get_values(cur))
-
+    if request.method == 'POST':
+        inputs = ['taskname' , 'timedobedone' , 'taskContent', 'taskcolour']
+        return redirect('/temp')
+    print()
     return render_template('board.html', board=board, columns=columns, tasks=tasks )
+
+@app.route('/temp', methods = ["POST" , "GET"])
+def temp():
+    global  inputs
+    global userId
+    global userBoardId
+    if request.method == 'POST':
+        taskName = request.form['taskname']
+        timedobedone = request.form['timedobedone']
+        taskContent = request.form['taskContent']
+        taskcolour = request.form['taskcolour']
+
+        functions.add_task(conn, cur, userId, userBoardId, taskName, timedobedone, taskContent, taskcolour)
+        return redirect(f'board\{userBoardId}')
+    else :
+        return render_template('temp.html' , inputs = inputs)
 
 app.run()

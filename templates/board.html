@@ -3,12 +3,14 @@
 <div>
 {% for i  in range(board['columncnt']) %}
   <p>{{columns[i]['columnname']}}</p>
+
   {% for task in tasks[i] %}
+    <p>{{task['taskname']}}</p>
 
-    <p> {{ task['taskname'] }} </p>
-    
   {% endfor %}
-
+  <form method="POST">
+  <input  type='submit' value="Добавить задание" >
+  </form>
 {% endfor %}
 </div>
 {% endblock %}
