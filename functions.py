@@ -6,7 +6,7 @@ import secret
 conn = None
 cur = None
 command = ""
-
+#start block functions work with base
 def set_connection(conn, cur):
     conn = psycopg2.connect(user=secret.DBuser, password=secret.DBpassword,
                                   host=secret.DBhost,
@@ -161,13 +161,13 @@ def edit_board(conn ,cur, boardid ,  name, columncnt, userright, userid ):
     cur.execute(command, values)
     conn.commit()
 
-def edit_boardColumn(conn, cur, columnId, name, taskid, boardid, posOnBoard ):
+def edit_boardColumn(conn, cur, columnId, name, boardid, posOnBoard ):
     if  conn == None or cur == None:
         conn, cur = set_connection(conn, cur)
 
 
-    command = """UPDATE boards
-    set columnname = %s, taskid = %s, boardid = %s, posOnBoard = %s
+    command = """UPDATE boardColumn
+    set columnname = %s, boardid = %s, posOnBoard = %s
     where  id = %s
     """
 
@@ -177,15 +177,15 @@ def edit_boardColumn(conn, cur, columnId, name, taskid, boardid, posOnBoard ):
     conn.commit()
 
 
-def edit_tasks(conn, cur, taskId, userid, boardid, taskname, timetobedone, taskcontent, taskcolour ):
+def edit_tasks(conn, cur, taskId, userid, boardid, columnid, taskname, timetobedone, taskcontent, taskcolour ):
     if  conn == None or cur == None:
         conn, cur = set_connection(conn, cur)
-    command = """UPDATE boards
-    set userid = %s, taskid = %s, boardid = %s, taskname = %s, timetobedone = %s, taskcontent = %s, taskcolour = %s
+    command = """UPDATE tasks
+    set userid = %s, taskid = %s, boardid = %s, columnid=  %s taskname = %s, timetobedone = %s, taskcontent = %s, taskcolour = %s
     where  id = %s
     """
 
-    values = ( userid, boardid, userright, boardid, taskname, timetobedone, taskcontent, taskcolour, taskId    )
+    values = ( userid, boardid, columnid, userright, boardid, taskname, timetobedone, taskcontent, taskcolour, taskId    )
 
     cur.execute(command, values)
     conn.commit()
@@ -199,6 +199,9 @@ def delete(conn, cur, tableName, elementId):
 
     cur.execute(command, values)
     conn.commit()
+
+#end block functions work with base
+
 
 def getStatUser(conn, cur, boardId,  userId):
     if  conn == None or cur == None:
@@ -221,3 +224,12 @@ def getStatUser(conn, cur, boardId,  userId):
         """
         cur.execute(command)
         stat[column['columnname']] = cur.fetchall()[0][0]
+
+def check_number(number):
+    if len(number) == 12 and number[0] == '+' and number[1] == '7':
+        for i in range(len(number)):
+            if not number[i].isnumeric():
+                return False
+        return True
+    else:
+        return False

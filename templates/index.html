@@ -23,11 +23,12 @@
             </form>
         </form>
         {% endif %}
+
         {% for board in boards %}
         {% if board['userright'] == 'creator'%}
         <div class="boardItem">
           <form action="board\{{board['id']}}">
-            <input class="boardName" type='submit' value= "{{board['name']}}">
+            <input class="yourp" type='submit' value= "{{board['name']}}">
           </form>
         </div>
         {% endif %}
@@ -39,7 +40,7 @@
         {% for board in boards %}
         {% if board['userright'] != 'creator'%}
         <div class="boardItem">
-            <p class="boardName">Доска {{board['name']}}</p>
+            <p class="yourp" >Доска {{board['name']}}</p>
         </div>
         {% endif %}
         {% endfor %}

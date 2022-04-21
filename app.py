@@ -26,11 +26,10 @@ def sendAlarm(user, message):
         return 'AlarmOff'
     else:
         url = "https://api.telegram.org/bot" + secret.TOKEN + "/sendMessage?chat_id=" + str(chat) + "&text=" + message
-        print(url)
         res = requests.get(url)
         print(res)
 
-sendAlarm(8, 'Ебать ты...')
+#sendAlarm(8, 'Ебать ты...')
 
 
 '''
@@ -58,6 +57,7 @@ def index(name=None, nick=None, create='true', other = None):
     #если нет, то\
     global userId
     if (request.cookies.get('login') != None):
+        #check cookie in base
         flag = False
         name = request.cookies.get('login')
         users = functions.get_users(conn, cur)
@@ -66,12 +66,13 @@ def index(name=None, nick=None, create='true', other = None):
                 nick = user['nickname']
                 userId = user['id']
                 flag = True
+        #ifdata from cookie dont exsist in baseredirect on login
         if (not flag):
             return redirect('/login')
-        print(userId)
+
         boards = functions.get_boards(conn, cur, userId)
-        print(boards)
         if request.method == 'POST':
+            #if create new autoName for new board
             nameBoard = 'Новый автомат'
             if (len(boards) >= 1):
                 nameBoard = nameBoard + ' ' +  str(len(boards))
@@ -84,7 +85,7 @@ def index(name=None, nick=None, create='true', other = None):
                 create = None
             if board['userright'] != 'creator':
                 other = 'true'
-        print(create)
+#variable 'creator' for check out boards in page and return pagewith boadrs
         return  render_template('index.html', name=name, nick=nick, boards=boards, create=create, other=other)
     else:
 
@@ -95,13 +96,14 @@ def index(name=None, nick=None, create='true', other = None):
 def login(valid= None):
     global userId
     if request.method == 'POST':
+        #get from page
         tempLogin = request.form['login']
         tempPassword = request.form['password']
-        #есть в базе на самом деле
+#get all users to check data pageswith base
         users = functions.get_users(conn, cur)
         for user in users:
             if user['login'] == tempLogin and user['password'] == tempPassword:
-
+#set cookies ifdata is right
                 resp = make_response(redirect('/'))
                 resp.set_cookie('login',  tempLogin )
                 resp.set_cookie('password', tempPassword)
@@ -109,6 +111,7 @@ def login(valid= None):
                 userId = user['id']
                 return resp
         else:
+            #check for validinput
             valid = 'Invalid'
             return render_template('login.html', valid=valid)
     else:
@@ -118,9 +121,11 @@ def login(valid= None):
 @app.route('/reg', methods=['GET', 'POST'])
 def reg(name = None):
     if  request.method == 'POST':
+        #gets all data from reg
         tempLogin = request.form['login']
         tempPassword = request.form['password']
         tempPhone = request.form['phone']
+        #andcreate attribute with this database
         functions.add_user(conn, cur, tempLogin, tempLogin, tempPassword, tempPhone)
         return redirect('/login')
     else:
@@ -129,25 +134,32 @@ def reg(name = None):
 
 @app.route('/logout')
 def logout():
+#reset cookie for logout
+    resp.set_cookie('login',  '' )
+    resp.set_cookie('password', '')
     return redirect('/login')
-
-
-@app.route('/boards', methods= ['GET', 'POST'])
-def boards():
-    global userId
-    boards = functions.get_boards(conn ,cur, userId)
-    return render_template('boards.html', boards = boards)
 
 
 @app.route('/board/<boardId>', methods= ['GET' , "POST"])
 def board(boardId):
+    #get allneededvariable
     global conn
     global cur
     global inputs
     global userBoardId
     global columnId
+    global userId
+    #set boardId and set connection
     userBoardId = boardId
     conn, cur = functions.set_connection(conn ,cur)
+
+    #get board attribute from base
+    cur.execute("SELECT * from boards where id = %s ",  [boardId])
+    board = functions.get_values(cur)
+    board = board[0]
+    tasks = []
+
+#get all columns from base for this board
     command = ("""
         select columnName, posOnBoard, boardColumn.id
         from boardColumn
@@ -156,14 +168,9 @@ def board(boardId):
     """)
     cur.execute(command, [boardId])
     columns = functions.get_values(cur)
-    print(columns)
 
-    cur.execute("SELECT * from boards where id = %s ",  [boardId])
-    board = functions.get_values(cur)
-    board = board[0]
-    tasks = []
-    \
     for i in range(1, int(board['columncnt']) +1):
+        #get tasks for column inbase
         command = """
             select taskName, taskColour, taskContent, tasks.id , tasks.timetobedone
             from tasks
@@ -172,27 +179,29 @@ def board(boardId):
         cur.execute(command, [userBoardId, columns[i-1]['id']])
         tasks.append(functions.get_values(cur))
     if request.method == 'POST':
-        columnId = request.form['columnId']
-        inputs = ['taskname' , 'timedobedone' , 'taskContent', 'taskcolour']
-        return redirect('/temp')
-    print(tasks)
+        taskName = request.form['taskname']
+        timedobedone = request.form['timetobedone']
+        taskContent = request.form['taskContent']
+        taskcolour = request.form['taskcolour']
+        functions.add_task(conn, cur, userId, userBoardId, columnId, taskName, timedobedone, taskContent, taskcolour)
+        print(boardId)
+        return redirect('/board/' + str(boardId))
     return render_template('board.html', board=board, columns=columns, tasks=tasks )
 
-@app.route('/temp', methods = ["POST" , "GET"])
+@app.route('/newTask', methods = ["POST" , "GET"])
 def temp():
-    global  inputs
+    global inputs
     global userId
     global userBoardId
     global columnId
     if request.method == 'POST':
         taskName = request.form['taskname']
-        timedobedone = request.form['timedobedone']
+        timedobedone = request.form['timetobedone']
         taskContent = request.form['taskContent']
         taskcolour = request.form['taskcolour']
-
         functions.add_task(conn, cur, userId, userBoardId, columnId, taskName, timedobedone, taskContent, taskcolour)
         return redirect(f'board\{userBoardId}')
     else :
-        return render_template('temp.html' , inputs = inputs)
+        return render_template('newTask.html' , inputs = inputs)
 
-app.run(debug = True)
+app.run()

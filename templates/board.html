@@ -1,17 +1,52 @@
 {% extends 'base.html' %}
 {% block content %}
-<div>
-{% for i  in range(board['columncnt']) %}
-  <p>{{columns[i]['columnname']}}</p>
-
-  {% for task in tasks[i] %}
-    <p>{{task['taskname']}}</p>
-
-  {% endfor %}
-  <form method="POST">
-    <input name ='columnId' type="text" value={{columns[i]['id']}}>
-  <input name = "button"  type='submit' value="Добавить задание" >
-  </form>
-{% endfor %}
-</div>
+    <div class="container">
+        {% for i  in range(board['columncnt']) %}
+            <div class="taskColumn">
+                <p class="columnName">{{columns[i]['columnname']}}</p>
+                {% for task in tasks[i] %}
+                <div class="task">
+                    <p class="taskName" style="background-color: #{{task['colour']}}">{{task['taskname']}}</p>
+                </div>
+                {% endfor %}
+                <form method="POST">
+                    <input class="hidden" name ='columnId' type="text" value={{columns[i]['id']}}>
+                    <input class="addButton" name = "button"  value="+" onclick="showInput()">
+                </form>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="popUp">
+        <div class="login">
+            <h1>Создать задачу</h1>
+            <form  method="post"    >
+                <div class="text-field">
+                    <label class="text-field__label" for="login">Название</label>
+                    <input class="text-field__input" type="text" name="taskname"/>
+                </div>
+                <div class="text-field">
+                    <label class="text-field__label" for="login">Дедлайн</label>
+                    <input class="text-field__input" type="text" name="timetobedone"/>
+                </div>
+                <div class="text-field">
+                    <label class="text-field__label" for="login">Описание</label>
+                    <input class="text-field__input" type="text" name="taskContent"/>
+                </div>
+                <div class="text-field">
+                    <label class="text-field__label" for="login">HEX-цвет</label>
+                    <input class="text-field__input" type="text" name="taskcolour"/>
+                </div>
+                <input type="submit" class="button" value="Создать задачу">
+                <p onclick="location.href='/logout'">Разлогинится к хуям</p>
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function showInput() {
+            document.getElementsByClassName('popUp')[0].style.display = "block";
+        }
+        function hideInput() {
+            document.getElementsByClassName('popUp')[0].style.display = "none";
+        }
+    </script>
 {% endblock %}
