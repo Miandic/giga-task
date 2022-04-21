@@ -26,7 +26,9 @@
         {% for board in boards %}
         {% if board['userright'] == 'creator'%}
         <div class="boardItem">
-            <p class="boardName">Доска {{board['name']}}</p>
+          <form action="board\{{board['id']}}">
+            <input class="boardName" type='submit' value= "{{board['name']}}">
+          </form>
         </div>
         {% endif %}
         {% endfor %}
