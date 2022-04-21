@@ -2,12 +2,9 @@ from flask import Flask, redirect, request, render_template, make_response
 import psycopg2
 import functions
 import requests
-<<<<<<< HEAD
-#from bot import getChat
-=======
 import secret
 from bot import getChat
->>>>>>> bfe33f650d345b440830aabf4d7ccb5a5705c25a
+
 
 app = Flask (__name__)
 
@@ -21,8 +18,6 @@ userBoardId = 0
 columnId = 0
 conn, cur = functions.set_connection(conn , cur)
 
-<<<<<<< HEAD
-=======
 
 def sendAlarm(user, message):
     chat = getChat(user)
@@ -38,7 +33,6 @@ def sendAlarm(user, message):
 sendAlarm(8, 'Ебать ты...')
 
 
->>>>>>> bfe33f650d345b440830aabf4d7ccb5a5705c25a
 @app.route('/', methods=['GET', 'POST'])
 def index(name=None, nick=None, create='true', other = None):
     #проверка по кукам что аккаунт войдён

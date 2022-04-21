@@ -54,15 +54,12 @@ def getChat(Id):
     global userData
     for k, v in userData.items():
         if v['baseId'] == str(Id):
-<<<<<<< HEAD
             return userData[k]['chat']
 
-=======
             if v['alarm'] == 'True':
                 return userData[k]['chat']
             else:
                 return 'Sorry'
->>>>>>> bfe33f650d345b440830aabf4d7ccb5a5705c25a
 
 
 def checkLogin(Id):
