@@ -15,7 +15,7 @@ button_login = KeyboardButton('Войти в аккаунт🥸')
 
 login_kb = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True).add(button_login)
 
-
+userData = None
 with open('data.json') as json_file:
     userData = json.load(json_file)
 print(userData)
@@ -42,6 +42,7 @@ dp = Dispatcher(bot, storage=storage)
 def checkLogin(Id):
     global userData
     for login in userData.keys():
+        print(userData.keys())
         print(login)
         print(Id)
         print(" ")
@@ -52,7 +53,6 @@ def checkLogin(Id):
 
 def getUser(Id):
     global userData
-    global loggined
     users = functions.get_users(conn, cur)
     flag = True
     for user in users:
@@ -109,7 +109,7 @@ async def process_name(message: types.Message, state: FSMContext):
     print(userId)
     async with state.proxy() as data:
         data['name'] = message.text
-    userData[userId] = {'login': data['name'], 'password': None}
+    userData[str(userId)] = {'login': data['name'], 'password': None}
     print(userData)
     await User.next()
     await message.reply("Введите пароль:")
@@ -126,13 +126,12 @@ async def process_name(message: types.Message, state: FSMContext):
     userId = message.from_user.id
     async with state.proxy() as data:
         data['password'] = message.text
-    userData[userId]['password'] = data['password']
+    userData[str(userId)]['password'] = data['password']
     user = getUser(userId)
     print(userId)
     print(userData)
     if user != None:
         print(user)
-        loggined.append(userId)
         with open("data.json",'w') as f:
             dump(userData, f)
         await message.answer("Вы вошли в аккаунт " + user['login'] + "!")
