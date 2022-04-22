@@ -97,12 +97,12 @@ def add_task(conn, cur, userid, boardid, columnId, taskname, timetobedone, taskc
     conn.commit()
 
 
-def add_boardColumn(conn, cur, name, boardid, posOnBoard ):
+def add_boardColumn(conn, cur, name, boardid, posOnBoard):
     if  conn == None or cur == None:
         conn, cur = set_connection(conn, cur)
 
-    command = """INSERT INTO boardCOlumn(name, boardid, posOnBoard) values(%s, %s, %s)"""
-    values = (name, taskid, boardid, posOnBoard)
+    command = """INSERT INTO boardCOlumn(columnname, boardid, posOnBoard) values(%s, %s, %s)"""
+    values = (name, boardid, posOnBoard)
 
     cur.execute(command, values)
     conn.commit()
@@ -171,7 +171,7 @@ def edit_boardColumn(conn, cur, columnId, name, boardid, posOnBoard ):
     where  id = %s
     """
 
-    values = ( name, boardid, userright, boardid , posOnBoard, columnId )
+    values = ( name, boardid , posOnBoard, columnId )
 
     cur.execute(command, values)
     conn.commit()

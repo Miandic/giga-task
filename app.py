@@ -182,20 +182,50 @@ def board(boardId):
         print("Хуй")
         flag = False
         try:
+            posonboard = int(request.form['addColumn']) + 1
+            flag = True
+            print("t1")
+        except Exception as e:
+            flag = False
+            print("e1")
+
+        if flag:
+            print("посонборд")
+            print(posonboard)
+            for column in columns:
+                if int(column['posonboard']) >= posonboard:
+                    functions.edit_boardColumn(conn, cur, column['id'], column['columnname'], userBoardId, int(column['posonboard']) + 1 )
+                    print(column)
+            print("член")
+            functions.edit_board(conn ,cur, board['id'],  board['name'], int(board['columncnt']) + 1, board['userright'], board['userid'] )
+            print("большоё")
+            functions.add_boardColumn(conn, cur, 'Новая колонка', userBoardId, posonboard)
+            print("неплох")
+            return redirect('/board/' + str(boardId))
+
+        flag = False
+        try:
             columnId = request.form['columnId']
             flag = True
-            return render_template('board.html', board=board, columns=columns, tasks=tasks, flag = flag)
+            print("t2")
         except Exception as e:
-            print('хуй')
-            print(e)
+            flag = False
+            print("e2")
+
+        if flag:
+            print("колумнид")
+            print(columnId)
+            return render_template('board.html', board=board, columns=columns, tasks=tasks, flag=flag)
+        else:
             taskName = request.form['taskname']
             timedobedone = request.form['timetobedone']
             taskContent = request.form['taskContent']
             taskcolour = request.form['taskcolour']
             print(boardId, columnId)
             functions.add_task(conn, cur, userId, userBoardId, columnId, taskName, timedobedone, taskContent, taskcolour)
+            return redirect('/board/' + str(boardId))
 
         return redirect('/board/' + str(boardId))
     return render_template('board.html', board=board, columns=columns, tasks=tasks)
 
-app.run(debug = False)
+app.run(debug = True)
