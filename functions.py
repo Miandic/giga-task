@@ -101,17 +101,17 @@ def add_boardColumn(conn, cur, name, boardid, posOnBoard ):
     if  conn == None or cur == None:
         conn, cur = set_connection(conn, cur)
 
-    command = """INSERT INTO boardCOlumn(name, boardid, posOnBoard) values(%s, %s, %s)"""
-    values = (name, taskid, boardid, posOnBoard)
+    command = """INSERT INTO boardColumn(columnname, boardid, posOnBoard) values(%s, %s, %s)"""
+    values = (name,  boardid, posOnBoard)
 
     cur.execute(command, values)
     conn.commit()
-
+add_boardColumn(None , None , 'новая колонка', 32 , 4)
 def add_board_for_user(conn, cur, userId,  boardName):
     if  conn == None or cur == None:
         conn, cur = set_connection(conn, cur)
 
-    command = """INSERT INTO Boards(userId, name, userright, columncnt ) VALUES(%s, %s, 'creator',  3) """
+    command = """INSERT INTO boards(userId, name, userright, columncnt ) VALUES(%s, %s, 'creator',  3) """
     values = (userId, boardName)
     cur.execute(command, values)
 
@@ -160,7 +160,6 @@ def edit_board(conn ,cur, boardid ,  name, columncnt, userright, userid ):
 
     cur.execute(command, values)
     conn.commit()
-
 def edit_boardColumn(conn, cur, columnId, name, boardid, posOnBoard ):
     if  conn == None or cur == None:
         conn, cur = set_connection(conn, cur)
@@ -171,11 +170,12 @@ def edit_boardColumn(conn, cur, columnId, name, boardid, posOnBoard ):
     where  id = %s
     """
 
-    values = ( name, boardid, userright, boardid , posOnBoard, columnId )
+    values = ( name,boardid , posOnBoard, columnId )
 
     cur.execute(command, values)
     conn.commit()
 
+edit_boardColumn(None, None, 59, 'poggers', 32, 2, )
 
 def edit_tasks(conn, cur, taskId, userid, boardid, columnid, taskname, timetobedone, taskcontent, taskcolour ):
     if  conn == None or cur == None:
