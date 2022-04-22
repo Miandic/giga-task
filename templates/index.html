@@ -5,7 +5,7 @@
     <p class="nick">{{nick}}</p>
     <p class="logintxt">{{name}}</p>
     <div class="line"></div>
-        <p class="menu_button" onclick="location.href='t.me/...'">Бот телеграмм</p>
+        <p class="menu_button" onclick="location.href='https://t.me/GigaTaskBot'">Бот телеграмм</p>
         <form  method="post">
         <input class="menu_button_input" type='submit' value="Создать доску">
         </form>
@@ -27,8 +27,9 @@
         {% for board in boards %}
         {% if board['userright'] == 'creator'%}
         <div class="boardItem">
-          <form action="board\{{board['id']}}">
+          <form action="board\{{board['id']}}" style="display: inline-block; vertical-align: middle;">
             <input class="yourp" type='submit' value= "{{board['name']}}">
+            <img src="{{url_for('static', filename='img/GigaTrashCan.svg')}}" alt="Удалить" style="display: inline-block; width: 10%; vertical-align: middle;" onclick="location.href='/del/{{board['id']}}'">
           </form>
         </div>
         {% endif %}

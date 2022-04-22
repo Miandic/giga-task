@@ -94,6 +94,32 @@ def index(name=None, nick=None, create='true', other = None):
         return redirect('/login')
 
 
+@app.route('/del/<boardId>')
+def delBoard(boardId):
+    global conn
+    global cur
+    command = f"""
+    select *
+    from  boardColumn
+    where boardid = {boardId}
+    """
+    cur.execute(command)
+    columns = functions.get_values(cur)
+    for column in columns:
+        command  =  f"""
+            select *
+            from tasks
+            where columnId = {column['id']}
+        """
+        cur.execute(command)
+        tasks = functions.get_values(cur)
+        for task in tasks:
+            conn , cur = functions.delete(conn, cur, "tasks", task['id'] )
+        conn, cur = functions.delete(conn, cur, "boardColumn", column['id'])
+    conn ,cur= functions.delete(conn, cur,'boards', boardId)
+    return redirect('/')
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login(valid= None):
     global userId

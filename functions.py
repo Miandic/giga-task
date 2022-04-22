@@ -196,10 +196,10 @@ def delete(conn, cur, tableName, elementId):
         conn, cur = set_connection(conn, cur)
 
     command = f"DELETE FROM {tableName} WHERE id = {elementId}"
-    values = (elementId)
 
-    cur.execute(command, values)
+    cur.execute(command)
     conn.commit()
+    return (conn,cur)
 
 #end block functions work with base
 

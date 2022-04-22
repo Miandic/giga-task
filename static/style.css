@@ -251,9 +251,6 @@ input[type="text"] {
     text-align: center;
     cursor: pointer;
 }
-.boardItem:hover{
-    background-color: #8596e8;
-}
 
 .boardName{
     font-family: 'Work Sans', sans-serif;
@@ -271,6 +268,7 @@ input[type="text"] {
 }
 .yourp{
     display: inline-block;
+    vertical-align: middle;
     min-width: 20vw;
     border-radius: 3px;
     background-color: #A8BBEB;
