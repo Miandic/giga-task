@@ -1,5 +1,10 @@
-{% for user in users %}
-<p>{{stat[user['login']]}}</p>
+{% for i in range(lenstat) %}
+<p>{{stat[i]}}</p>
 
+{% endfor %}
+
+{% for statistics in stat %}
+<p>{{stat['statistics']}}</p>
+<p>{{statistics}}</p>
 
 {% endfor %}

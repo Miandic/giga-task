@@ -82,12 +82,12 @@ def stat(boardId):
         where tasks.boardId = {boardId} and tasks.userid = users.id
     """
     cur.execute(command)
-    users = functions.get_values(cur)
+    users =functions.get_values(cur)
     stat = {}
     for user in users:
         stat[user['login']] = functions.getStatUser(conn ,cur, boardId, user['id'])
     print(stat)
-    return render_template('stat.html', users=users,  stat=stat)
+    return render_template('stat.html', lenstat = len(stat),  stat=stat)
 
 @app.route('/taskDel/<taskId>')
 def teskdel(taskId):
