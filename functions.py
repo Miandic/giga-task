@@ -225,6 +225,7 @@ def getStatUser(conn, cur, boardId,  userId):
         """
         cur.execute(command)
         stat[column['columnname']] = cur.fetchall()[0][0]
+    return stat
 
 def check_number(number):
     if len(number) == 12 and number[0] == '+' and number[1] == '7':

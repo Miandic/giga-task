@@ -83,10 +83,8 @@ def stat(boardId):
     """
     cur.execute(command)
     users = functions.get_values(cur)
-    print(users)
     stat = {}
     for user in users:
-        print(user)
         stat[user['login']] = functions.getStatUser(conn ,cur, boardId, user['id'])
     print(stat)
     return render_template('stat.html', users=users,  stat=stat)
