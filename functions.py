@@ -101,6 +101,7 @@ def add_boardColumn(conn, cur, name, boardid, posOnBoard):
     if  conn == None or cur == None:
         conn, cur = set_connection(conn, cur)
 
+
     command = """INSERT INTO boardCOlumn(columnname, boardid, posOnBoard) values(%s, %s, %s)"""
     values = (name, boardid, posOnBoard)
 
