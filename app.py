@@ -31,11 +31,9 @@ def sendAlarm(user, message):
         res = requests.get(url)
         print(res)
 
-#sendAlarm(8, 'Ебать ты...')
-
 
 '''
-———————————No Data Bases?———————————
+———————————No secret.py?———————————
 ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝
 ⠸⡸⠜⠕⠕⠁⢁⢇⢏⢽⢺⣪⡳⡝⣎⣏⢯⢞⡿⣟⣷⣳⢯⡷⣽⢽⢯⣳⣫⠇
 ⠀⠀⢀⢀⢄⢬⢪⡪⡎⣆⡈⠚⠜⠕⠇⠗⠝⢕⢯⢫⣞⣯⣿⣻⡽⣏⢗⣗⠏⠀
@@ -52,6 +50,15 @@ def sendAlarm(user, message):
 —————————————————————————————
 '''
 
+
+@app.route('/taskDel/<taskId>')
+def teskdel(taskId):
+    global connt
+    global cur
+    global userBoardId
+
+    functions.delete(conn, cur, "tasks" , taskId)
+    return redirect('/board/' +  str(userBoardId))
 
 @app.route('/', methods=['GET', 'POST'])
 def index(name=None, nick=None, create='true', other = None):
@@ -120,6 +127,54 @@ def delBoard(boardId):
     return redirect('/')
 
 
+@app.route('/colDel/<columnId>')
+def delColumn(columnId):
+    global conn
+    global cur
+    global userBoardId
+    command  =  f"""
+        select *
+        from tasks
+        where columnId = {columnId}
+    """
+    cur.execute(command)
+    tasks = functions.get_values(cur)
+    for task in tasks:
+        conn , cur = functions.delete(conn, cur, "tasks", task['id'] )
+    # свиг всего
+    command  =  f"""
+        select *
+        from boardColumn
+        where id = {columnId}
+    """
+    cur.execute(command)
+    columnDel = functions.get_values(cur)
+    columnDel = columnDel[0]
+
+    command  =  f"""
+        select *
+        from boardColumn
+        WHERE boardid ={columnDel['boardid']}
+    """
+    cur.execute(command)
+    columns = functions.get_values(cur)
+    for column in columns:
+        if column['posonboard'] < columnDel['posonboard']:
+            functions.edit_boardColumn(conn, cur, column['id'], column['columnname'], userBoardId, int(columnDel['posonboard']) -1 )
+    functions.delete(conn, cur, "boardColumn", columnId)
+    command = f"""
+        select *
+        from boards
+        where id = {userBoardId}
+    """
+    cur.execute(command)
+    board = functions.get_values(cur)[0]
+
+    functions.edit_board(conn ,cur, board['id'],  board['name'], int(board['columncnt']) - 1, board['userright'], board['userid'])
+    return redirect('/board/' + str(board['id']))
+
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login(valid= None):
     global userId
@@ -163,9 +218,10 @@ def reg(name = None):
 @app.route('/logout')
 def logout():
 #reset cookie for logout
+    resp = make_response(redirect('/'))
     resp.set_cookie('login',  '' )
     resp.set_cookie('password', '')
-    return redirect('/login')
+    return resp
 
 
 @app.route('/board/<boardId>', methods= ['GET' , "POST"])

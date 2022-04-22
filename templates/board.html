@@ -3,10 +3,14 @@
     <div class="container2">
         {% for i  in range(board['columncnt']) %}
             <div class="taskColumn">
-                <p class="columnName">{{columns[i]['columnname']}}</p>
+                <p class="columnName">{{columns[i]['columnname']}}
+                <img src="{{url_for('static', filename='img/GigaTrashCan.svg')}}" alt="Удалить" style="width: 20px; vertical-align: middle;" onclick="location.href='/colDel/{{columns[i]['id']}}'">
+                </p>
                 {% for task in tasks[i] %}
                 <div class="task">
-                    <p class="taskName" style="background-color: #{{task['colour']}}">{{task['taskname']}}</p>
+                    <p class="taskName" style="background-color: #{{task['colour']}}">{{task['taskname']}}
+                    <img src="{{url_for('static', filename='img/niggertrashcan.svg')}}" alt="Удалить" style="width: 20px; vertical-align: middle;" onclick="location.href='/taskDel/{{task['id']}}'">
+                    </p>
                 </div>
                 {% endfor %}
                 <form method="POST">
