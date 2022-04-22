@@ -107,7 +107,7 @@ def add_boardColumn(conn, cur, name, boardid, posOnBoard):
 
     cur.execute(command, values)
     conn.commit()
-add_boardColumn(None , None , 'новая колонка', 32 , 4)
+
 def add_board_for_user(conn, cur, userId,  boardName):
     if  conn == None or cur == None:
         conn, cur = set_connection(conn, cur)

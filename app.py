@@ -3,7 +3,7 @@ import psycopg2
 import functions
 import requests
 import secret
-#from bot import getChat
+from bot import getChat
 
 
 app = Flask (__name__)
@@ -18,9 +18,11 @@ userBoardId = 0
 columnId = 0
 conn, cur = functions.set_connection(conn , cur)
 
-"""
+
 def sendAlarm(user, message):
+    print(user)
     chat = getChat(user)
+    print(chat)
     if chat == 'Sorry':
         print('Aboba')
         return 'AlarmOff'
@@ -28,7 +30,7 @@ def sendAlarm(user, message):
         url = "https://api.telegram.org/bot" + secret.TOKEN + "/sendMessage?chat_id=" + str(chat) + "&text=" + message
         res = requests.get(url)
         print(res)
-"""
+
 #sendAlarm(8, 'Ебать ты...')
 
 
@@ -225,6 +227,7 @@ def board(boardId):
             users = functions.get_users(conn, cur)
             for user in users:
                 if user['login'] == userLogin:
+                    sendAlarm(user['id'], 'Вам поставили новую задачу!')
                     functions.add_task(conn, cur, user['id'], userBoardId, columnId, taskName, timedobedone, taskContent, taskcolour)
                     return redirect('/board/' + str(boardId))
             print(boardId, columnId)

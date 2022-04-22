@@ -52,10 +52,10 @@ dp = Dispatcher(bot, storage=storage)
 
 def getChat(Id):
     global userData
+    with open('data.json') as json_file:
+        userData = json.load(json_file)
     for k, v in userData.items():
         if v['baseId'] == str(Id):
-            return userData[k]['chat']
-
             if v['alarm'] == 'True':
                 return userData[k]['chat']
             else:
