@@ -27,6 +27,22 @@ input[type="text"] {
     padding: 0 15px;
     margin: 0 auto;
 }
+.container2{
+    overflow-x: scroll;
+    max-height:90vh;
+    padding: 0 15px 7%;
+    margin: 0 auto;
+    white-space: nowrap;
+}
+.container2::-webkit-scrollbar{
+    width: 7px;
+    background-color: #A8BBEB;
+    -webkit-box-shadow: 5px 5px 5px -1px rgba(34, 60, 80, 0.2) inset;
+}
+.container2::-webkit-scrollbar-thumb{
+    border-radius: 10px;
+    background-color: #25275C;
+}
 .logo{
     display: inline-block;
     margin: 0.5% auto auto 0.5%;
@@ -325,9 +341,9 @@ input[type="text"] {
     background-color: rgba(70,83,131, 0.7);
     box-shadow: 2px 2px 4px 1px rgba(0,0,0,.25);
 }
-.container > form{
+.container2 > form{
     display: inline-block;
-    
+
 }
 .addColButton{
     font-family: 'Work Sans', sans-serif;
