@@ -221,9 +221,13 @@ def board(boardId):
             timedobedone = request.form['timetobedone']
             taskContent = request.form['taskContent']
             taskcolour = request.form['taskcolour']
+            userLogin = request.form['login']
+            users = functions.get_users(conn, cur)
+            for user in users:
+                if user['login'] == userLogin:
+                    functions.add_task(conn, cur, user['id'], userBoardId, columnId, taskName, timedobedone, taskContent, taskcolour)
+                    return redirect('/board/' + str(boardId))
             print(boardId, columnId)
-            functions.add_task(conn, cur, userId, userBoardId, columnId, taskName, timedobedone, taskContent, taskcolour)
-            return redirect('/board/' + str(boardId))
 
         return redirect('/board/' + str(boardId))
     return render_template('board.html', board=board, columns=columns, tasks=tasks)
