@@ -10,16 +10,17 @@
                 </div>
                 {% endfor %}
                 <form method="POST">
-                    <input class="hidden" name ='columnId' type="text" value={{columns[i]['id']}}>
-                    <input class="addButton" name = "button"  value="+" onclick="showInput()">
+                    <input class="hidden" name ='columnId' value={{columns[i]['id']}}>
+                    <input class="addButton" name = "button" type="submit" value="+" onclick="showInput()">
                 </form>
             </div>
         {% endfor %}
     </div>
+    {% if flag %}
     <div class="popUp">
         <div class="login">
             <h1>Создать задачу</h1>
-            <form  method="post"    >
+            <form method="post">
                 <div class="text-field">
                     <label class="text-field__label" for="login">Название</label>
                     <input class="text-field__input" type="text" name="taskname"/>
@@ -41,6 +42,7 @@
             </form>
         </div>
     </div>
+    {% endif %}
     <script type="text/javascript">
         function showInput() {
             document.getElementsByClassName('popUp')[0].style.display = "block";

@@ -330,7 +330,6 @@ input[type="text"] {
 }
 
 .popUp{
-    display: none;
     position: relative;
     top: -75vh;
 }

@@ -3,7 +3,7 @@ import psycopg2
 import functions
 import requests
 import secret
-from bot import getChat
+#from bot import getChat
 
 
 app = Flask (__name__)
@@ -18,7 +18,7 @@ userBoardId = 0
 columnId = 0
 conn, cur = functions.set_connection(conn , cur)
 
-
+"""
 def sendAlarm(user, message):
     chat = getChat(user)
     if chat == 'Sorry':
@@ -28,7 +28,7 @@ def sendAlarm(user, message):
         url = "https://api.telegram.org/bot" + secret.TOKEN + "/sendMessage?chat_id=" + str(chat) + "&text=" + message
         res = requests.get(url)
         print(res)
-
+"""
 #sendAlarm(8, 'Ебать ты...')
 
 
@@ -179,29 +179,23 @@ def board(boardId):
         cur.execute(command, [userBoardId, columns[i-1]['id']])
         tasks.append(functions.get_values(cur))
     if request.method == 'POST':
-        taskName = request.form['taskname']
-        timedobedone = request.form['timetobedone']
-        taskContent = request.form['taskContent']
-        taskcolour = request.form['taskcolour']
-        functions.add_task(conn, cur, userId, userBoardId, columnId, taskName, timedobedone, taskContent, taskcolour)
-        print(boardId)
+        print("Хуй")
+        flag = False
+        try:
+            columnId = request.form['columnId']
+            flag = True
+            return render_template('board.html', board=board, columns=columns, tasks=tasks, flag = flag)
+        except Exception as e:
+            print('хуй')
+            print(e)
+            taskName = request.form['taskname']
+            timedobedone = request.form['timetobedone']
+            taskContent = request.form['taskContent']
+            taskcolour = request.form['taskcolour']
+            print(boardId, columnId)
+            functions.add_task(conn, cur, userId, userBoardId, columnId, taskName, timedobedone, taskContent, taskcolour)
+
         return redirect('/board/' + str(boardId))
-    return render_template('board.html', board=board, columns=columns, tasks=tasks )
+    return render_template('board.html', board=board, columns=columns, tasks=tasks)
 
-@app.route('/newTask', methods = ["POST" , "GET"])
-def temp():
-    global inputs
-    global userId
-    global userBoardId
-    global columnId
-    if request.method == 'POST':
-        taskName = request.form['taskname']
-        timedobedone = request.form['timetobedone']
-        taskContent = request.form['taskContent']
-        taskcolour = request.form['taskcolour']
-        functions.add_task(conn, cur, userId, userBoardId, columnId, taskName, timedobedone, taskContent, taskcolour)
-        return redirect(f'board\{userBoardId}')
-    else :
-        return render_template('newTask.html' , inputs = inputs)
-
-app.run()
+app.run(debug = False)
