@@ -31,7 +31,25 @@ def sendAlarm(user, message):
         res = requests.get(url)
         print(res)
 
+'''
+  __  __           _____ _    _ _    _ _____
+ |  \/  |   /\    / ____| |  | | |  | |  __ \
+ | \  / |  /  \  | (___ | |__| | |  | | |__) |
+ | |\/| | / /\ \  \___ \|  __  | |  | |  ___/
+ | |  | |/ ____ \ ____) | |  | | |__| | |
+ |_|  |_/_/    \_\_____/|_|  |_|\____/|_|
 
+
+  _   _      _                     _                        _                                                  _
+ | \ | |    (_)                   | |                      | |                                                (_)
+ |  \| | ___ _ ______   _____  ___| |_ ___ _ __    ______  | |__   ___ ____  _ __   __ _ ______   ____ _ _ __  _ _   _  __ _
+ | . ` |/ _ \ |_  /\ \ / / _ \/ __| __/ _ \ '_ \  |______| | '_ \ / _ \_  / | '_ \ / _` |_  /\ \ / / _` | '_ \| | | | |/ _` |
+ | |\  |  __/ |/ /  \ V /  __/\__ \ ||  __/ | | |          | |_) |  __// /  | | | | (_| |/ /  \ V / (_| | | | | | |_| | (_| |
+ |_| \_|\___|_/___|  \_/ \___||___/\__\___|_| |_|          |_.__/ \___/___| |_| |_|\__,_/___|  \_/ \__,_|_| |_|_|\__, |\__,_|
+                                                                                                                  __/ |
+                                                                                                                 |___/
+
+'''
 
 
 '''
@@ -52,6 +70,26 @@ def sendAlarm(user, message):
 —————————————————————————————
 '''
 
+
+@app.route('/stat/<boardId>', methods=['GET', 'POST'])
+def stat(boardId):
+    global conn
+    global cur
+
+    command = f"""
+        select users.login, users.id
+        FROM users,  tasks
+        where tasks.boardId = {boardId} and tasks.userid = users.id
+    """
+    cur.execute(command)
+    users = functions.get_values(cur)
+    print(users)
+    stat = {}
+    for user in users:
+        print(user)
+        stat[user['login']] = functions.getStatUser(conn ,cur, boardId, user['id'])
+    print(stat)
+    return render_template('stat.html', users=users,  stat=stat)
 
 @app.route('/taskDel/<taskId>')
 def teskdel(taskId):
@@ -298,7 +336,7 @@ def board(boardId):
         if flag:
             board['name'] = newName
             functions.edit_board(conn ,cur, board['id'],  board['name'], int(board['columncnt']), board['userright'], board['userid'])
-            return render_template('board.html', board=board, columns=columns, tasks=tasks)
+            return render_template('board.html', board=board, columns=columns, tasks=tasks, boardId = userBoardId)
 
         try:
             posonboard = int(request.form['addColumn']) + 1
@@ -327,7 +365,7 @@ def board(boardId):
             print("e2")
 
         if flag:
-            return render_template('board.html', board=board, columns=columns, tasks=tasks, flag=flag)
+            return render_template('board.html', board=board, columns=columns, tasks=tasks, flag=flag , boardId = userBoardId)
         else:
             taskName = request.form['taskname']
             timedobedone = request.form['timetobedone']
@@ -344,6 +382,6 @@ def board(boardId):
             print(boardId, columnId)
 
         return redirect('/board/' + str(boardId))
-    return render_template('board.html', board=board, columns=columns, tasks=tasks)
+    return render_template('board.html', board=board, columns=columns, tasks=tasks, boardId = userBoardId)
 
 app.run(debug = True)
