@@ -4,7 +4,8 @@
 {% endfor %}
 
 {% for statistics in stat %}
-<p>{{stat['statistics']}}</p>
 <p>{{statistics}}</p>
-
+<p>{{statistics['to-do']}}</p>
+<p>{{statistics['inProgress']}}</p>
+<p>{{statistics['done']}}</p>
 {% endfor %}
