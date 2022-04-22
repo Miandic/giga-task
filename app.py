@@ -32,6 +32,8 @@ def sendAlarm(user, message):
         print(res)
 
 
+
+
 '''
 ———————————No secret.py?———————————
 ⠀⣞⢽⢪⢣⢣⢣⢫⡺⡵⣝⡮⣗⢷⢽⢽⢽⣮⡷⡽⣜⣜⢮⢺⣜⢷⢽⢝⡽⣝
@@ -82,7 +84,7 @@ def index(name=None, nick=None, create='true', other = None):
         boards = functions.get_boards(conn, cur, userId)
         if request.method == 'POST':
             #if create new autoName for new board
-            nameBoard = 'Новый автомат'
+            nameBoard = 'Новая доска'
             if (len(boards) >= 1):
                 nameBoard = nameBoard + ' ' +  str(len(boards))
 
@@ -325,8 +327,6 @@ def board(boardId):
             print("e2")
 
         if flag:
-            print("колумнид")
-            print(columnId)
             return render_template('board.html', board=board, columns=columns, tasks=tasks, flag=flag)
         else:
             taskName = request.form['taskname']
@@ -338,6 +338,7 @@ def board(boardId):
             for user in users:
                 if user['login'] == userLogin:
                     sendAlarm(user['id'], 'Вам поставили новую задачу!')
+                    print("Увед")
                     functions.add_task(conn, cur, user['id'], userBoardId, columnId, taskName, timedobedone, taskContent, taskcolour)
                     return redirect('/board/' + str(boardId))
             print(boardId, columnId)

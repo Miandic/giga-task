@@ -9,8 +9,8 @@
         <form  method="post">
         <input class="menu_button_input" type='submit' value="Создать доску">
         </form>
-        <p class="menu_button" onclick="location.href='/profile'">Редактировать профиль</p>
-        <p class="menu_button" onclick="location.href='/theme'">Сменить тему</p>
+        <p class="menu_button" onclick="location.href='/'">Редактировать профиль</p>
+        <p class="menu_button" onclick="location.href='/'">Сменить тему</p>
         <p class="menu_button" onclick="location.href='/logout'">Выйти</p>
 </div>
 <div class="boardList">
@@ -23,7 +23,7 @@
             </form>
         </form>
         {% endif %}
-        
+
         {% for board in boards %}
         {% if board['userright'] == 'creator'%}
         <div class="boardItem">
