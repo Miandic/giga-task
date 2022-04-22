@@ -14,6 +14,7 @@
                 <img class="logo" src="{{ url_for('static', filename='img/chad.webp')}}" alt="Лого">
                 <h1 class="logo_txt1" onclick="location.href='/'">Giga</h1>
                 <h1 class="logo_txt2" onclick="location.href='/'">Task</h1>
+                {% block board %}{% endblock %}
         </header>
         <div class="content">
             {% block content %}{% endblock %}

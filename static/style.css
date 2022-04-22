@@ -296,12 +296,18 @@ input[type="text"] {
 .hidden{
     display: none;
 }
+
 .columnName{
     background-color: #465383;
+    width: 80%;
+    color: white;
     margin: 0;
     padding: 5% 3%;
-    font-size: 150%;
+    font-size: 150% !important;
+    border: none;
+    transition: 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+
 .taskName{
     background-color: white;
     border-radius: 3px;
@@ -364,4 +370,35 @@ input[type="text"] {
 .popUp{
     position: relative;
     top: -90vh;
+}
+.noviy{
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 200% !important;
+    color: white !important;
+    font-family: 'Work Sans', sans-serif;
+    border: none;
+    border-radius: 5rem;
+    background-color: #25275C;
+    transition: 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.noviy{
+    font-family: 'Work Sans', sans-serif !important;
+}
+.da{
+    display: none;
+    vertical-align: middle;
+    font-family: 'Work Sans', sans-serif !important;
+    padding: 0.375rem 0.75rem;
+    border: 1px solid #bdbdbd;
+    border-radius: 5rem;
+    transition: 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.avtomat{
+    background-color: #25275C;
+    display: inline-block;
+    margin-left: 20%;
+    vertical-align: top;
+    margin-top: 0.7%;
 }

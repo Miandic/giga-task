@@ -127,6 +127,11 @@ def delBoard(boardId):
     return redirect('/')
 
 
+@app.route('/uploadAv')
+def sorry():
+    return redirect('/')
+
+
 @app.route('/colDel/<columnId>')
 def delColumn(columnId):
     global conn
@@ -160,7 +165,7 @@ def delColumn(columnId):
     columns = functions.get_values(cur)
     for column in columns:
         if column['posonboard'] < columnDel['posonboard']:
-            functions.edit_boardColumn(conn, cur, column['id'], column['columnname'], userBoardId, int(columnDel['posonboard']) -1 )
+            functions.edit_boardColumn(conn, cur, column['id'], column['columnname'], userBoardId, int(column['posonboard'])- 1 )
     functions.delete(conn, cur, "boardColumn", columnId)
     command = f"""
         select *
@@ -252,7 +257,7 @@ def board(boardId):
     """)
     cur.execute(command, [boardId])
     columns = functions.get_values(cur)
-
+    print(columns)
     for i in range(1, int(board['columncnt']) +1):
         #get tasks for column inbase
         command = """
@@ -263,8 +268,36 @@ def board(boardId):
         cur.execute(command, [userBoardId, columns[i-1]['id']])
         tasks.append(functions.get_values(cur))
     if request.method == 'POST':
-        print("Хуй")
         flag = False
+        try:
+            newColName = request.form['columnName']
+            columnId = request.form['colId']
+            flag = True
+            print("t-1")
+        except Exception as e:
+            flag = False
+            print("e-1")
+
+        if flag:
+            for column in columns:
+                if str(columnId) == str(column['id']):
+                    functions.edit_boardColumn(conn, cur, column['id'], str(newColName), userBoardId, int(column['posonboard']))
+            return redirect('/board/' + str(boardId))
+
+        flag = False
+        try:
+            newName = request.form['boardName']
+            flag = True
+            print("t0")
+        except Exception as e:
+            flag = False
+            print("e0")
+
+        if flag:
+            board['name'] = newName
+            functions.edit_board(conn ,cur, board['id'],  board['name'], int(board['columncnt']), board['userright'], board['userid'])
+            return render_template('board.html', board=board, columns=columns, tasks=tasks)
+
         try:
             posonboard = int(request.form['addColumn']) + 1
             flag = True
@@ -274,17 +307,12 @@ def board(boardId):
             print("e1")
 
         if flag:
-            print("посонборд")
-            print(posonboard)
             for column in columns:
                 if int(column['posonboard']) >= posonboard:
                     functions.edit_boardColumn(conn, cur, column['id'], column['columnname'], userBoardId, int(column['posonboard']) + 1 )
                     print(column)
-            print("член")
             functions.edit_board(conn ,cur, board['id'],  board['name'], int(board['columncnt']) + 1, board['userright'], board['userid'] )
-            print("большоё")
             functions.add_boardColumn(conn, cur, 'Новая колонка', userBoardId, posonboard)
-            print("неплох")
             return redirect('/board/' + str(boardId))
 
         flag = False

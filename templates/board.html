@@ -1,11 +1,21 @@
 {% extends 'base.html' %}
+{% block board %}
+<form method="post" class="avtomat">
+    <input type="text" name="boardName" value="{{board['name']}}" class="noviy">
+    <input type="submit" name="submit" value="Переименовать" class="da">
+</form>
+{% endblock %}
 {% block content %}
     <div class="container2">
         {% for i  in range(board['columncnt']) %}
             <div class="taskColumn">
-                <p class="columnName">{{columns[i]['columnname']}}
-                <img src="{{url_for('static', filename='img/GigaTrashCan.svg')}}" alt="Удалить" style="width: 20px; vertical-align: middle;" onclick="location.href='/colDel/{{columns[i]['id']}}'">
-                </p>
+                <form method="post" style="background-color: #465383;">
+                    <input class="hidden" type="text" name="colId" value="{{columns[i]['id']}}">
+                    <input type="text" name="columnName" value="{{columns[i]['columnname']}}" class="columnName">
+                    <input type="submit" name="submit" value="Переименовать" class="da">
+                    <img src="{{url_for('static', filename='img/GigaTrashCan.svg')}}" alt="Удалить" style="width: 20px; vertical-align: middle;" onclick="location.href='/colDel/{{columns[i]['id']}}'">
+                </form>
+
                 {% for task in tasks[i] %}
                 <div class="task">
                     <p class="taskName" style="background-color: #{{task['colour']}}">{{task['taskname']}}
