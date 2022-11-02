@@ -7,6 +7,7 @@ conn = None
 cur = None
 command = ""
 #start block functions work with base
+
 def set_connection(conn, cur):
     conn = psycopg2.connect(user=secret.DBuser, password=secret.DBpassword,
                                   host=secret.DBhost,
@@ -14,6 +15,7 @@ def set_connection(conn, cur):
                                   database="alpha")
     cur = conn.cursor(cursor_factory = psycopg2.extras.DictCursor)
     return (conn , cur)
+
 def close_connection(conn , cur):
         cur.close()
         conn.commit()

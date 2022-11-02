@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+
+
+body {
+  margin: 0;
+  font-family: 'JetBrains Mono', monospace;
+  background-color: #17BEBB;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.wrapper{
+  display: block;
+}
+
+.header{
+  height: 3rem;
+  background-color: #0f7f7d;
+}
+
+.header > input {
+  height: 2rem;
+  width: 20vw;
+  color: white;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.5rem;
+  display: inline-block;
+  vertical-align: bottom;
+  text-align: center;
+  margin: 0 auto 0.25rem 20vw;
+  margin-bottom: 0.25rem;
+  background-color: #0f7f7d;
+  border: 0.25rem solid #0f7f7d;
+  border-radius: 0.5rem;
+  transition: 0.25s
+}
+
+.header > input:hover {
+  transition: 0.25s;
+  background-color: #b2d2d288;
+  border: 0.25rem solid #b2d2d200;
+  border-radius: 0.5rem;
+}
+
+.header > input:focus {
+  outline: none;
+  transition: 0.25s;
+  background-color: #b2d2d288;
+  border: 0.25rem solid #b2d2d288;
+  border-radius: 0.5rem;
+}
+
+.header-logo{
+  height: 2.25rem;
+  width: 17vw;
+  margin: 0.25rem 0 0.25rem 3vw;
+  display: inline-block;
+}
+
+.header-logo > img{
+  height: 2.5rem;
+  display: inline-block;
+}
+
+.header-logo > span{
+  height: 2.5rem;
+  font-size: 2rem;
+  color: white;
+  vertical-align: top;
+  display: inline-block;
+}

@@ -373,7 +373,7 @@ def board(boardId):
             users = functions.get_users(conn, cur)
             for user in users:
                 if user['login'] == userLogin:
-                    sendAlarm(user['id'], 'Вам поставили новую задачу!')
+                    #sendAlarm(user['id'], 'Вам поставили новую задачу!')
                     print("Увед")
                     functions.add_task(conn, cur, user['id'], userBoardId, columnId, taskName, timedobedone, taskContent, taskcolour)
                     return redirect('/board/' + str(boardId))
