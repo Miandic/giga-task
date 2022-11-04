@@ -1,9 +1,9 @@
 import React from "react";
 
-export default function ColAddButton(){
+export default function ColAddButton(onChange){
     return (
-        <div className="col-add">
-            <i class="fa-solid fa-plus"></i>
+        <div className="col-add" onClick={() => onChange(-1)}>
+            <i className="fa-solid fa-plus"></i>
         </div>
     )
 }

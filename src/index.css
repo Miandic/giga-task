@@ -236,3 +236,26 @@ code {
   background-color: #efefef;
   box-shadow: 1px 1px 1px #2f2f2f40;
 }
+
+.raw-add {
+  background-color: #eeeeee;
+  padding: 0 15px;
+  margin: 0 5px;
+  border-radius: 10px;
+  text-align: center;
+  color: #DA3E52;
+  font-size: 25px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  transition: 0.25s;
+}
+
+.raw-add:hover {
+  background-color: #e7e7e7;
+  box-shadow: 2px 2px 2px #2f2f2f40;
+}
+
+.raw-aad:active {
+  background-color: #efefef;
+  box-shadow: 1px 1px 1px #2f2f2f40;
+}
