@@ -50,7 +50,7 @@ function App() {
 
   function addRaw (colId) {
     let rawId = board.cols[colId].colRaws.length
-    let newboard = board
+    let newboard = {...board}
     newboard.cols[colId].colRaws.pop()
     newboard.cols[colId].colRaws.push({
       rawName: "Task name",
