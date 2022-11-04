@@ -22,7 +22,8 @@ function App() {
             rawId: 1
           },
           {
-            rawName: "upupdowndownleftrightleftrightAB"
+            rawName: "upupdowndownleftrightleftrightAB",
+            rawId: 2
           }
         ],
         colId: 0
@@ -37,13 +38,15 @@ function App() {
             rawId: 0
           },
           {
-            rawName: "upupdowndownleftrightleftrightAB"
+            rawName: "upupdowndownleftrightleftrightAB",
+            rawId: 1
           }
         ],
         colId: 1
       },
       {
-        colName: "upupdowndownleftrightleftrightAB"
+        colName: "upupdowndownleftrightleftrightAB",
+        colId: 3
       }
     ]
   })
@@ -59,13 +62,14 @@ function App() {
       rawId: rawId - 1
     })
     newboard.cols[colId].colRaws.push({
-      rawName: "upupdowndownleftrightleftrightAB"
+      rawName: "upupdowndownleftrightleftrightAB",
+      rawId: rawId
     })
     setBoard(newboard)
   }
 
   function addColumn() {
-    let calId = board.cols.length
+    let colId = board.cols.length
     let newboard = {...board}
     newboard.cols.pop()
     newboard.cols.push({
@@ -75,10 +79,11 @@ function App() {
           rawName: "upupdowndownleftrightleftrightAB"
         }
       ],
-      colId: calId - 1
+      colId: colId - 1
     })
     newboard.cols.push({
-      colName: "upupdowndownleftrightleftrightAB"
+      colName: "upupdowndownleftrightleftrightAB",
+      colId: colId
     })
     setBoard(newboard)
   }
@@ -113,6 +118,19 @@ function App() {
     setBoard(newboard)
   }
 
+  /*function deleteColumn(colId){
+
+  }*/
+
+  function deleteTask(colId, rawId){
+    let newboard = {...board}
+    newboard.cols[colId].colRaws.splice(rawId, 1)
+    for(let i = rawId; i < newboard.cols[colId].colRaws.length; i+=1){
+      newboard.cols[colId].colRaws[i].rawId -= 1
+    }
+    setBoard(newboard)
+  }
+
   return (
     <div className='wrapper'>
       <Header board={board} onChange={changeBoardName}/>
@@ -124,6 +142,7 @@ function App() {
         changeTaskName={changeTaskName}
         changeTaskText={changeTaskText}
         changeTaskWorker={changeTaskWorker}
+        deleteTask={deleteTask}
         />
     </div>
   );

@@ -138,6 +138,13 @@ code {
   box-shadow: 2px 2px 2px #2f2f2f40;
 }
 
+.task > i {
+  position: relative;
+  bottom: 3px;
+  left: 4px;
+  font-size: 12px;
+}
+
 .task-name {
   border: none;
   font-size: 18px;
