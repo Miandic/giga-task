@@ -98,14 +98,22 @@ code {
   border-radius: 10px;
 }
 
+.column > i {
+  display: inline-block;
+  font-size: 16px;
+  margin-left: 8px;
+  overflow: visible;
+}
+
 .column-name {
+  display: inline-block;
   border: none;
   font-size: 22px;
   font-family: 'JetBrains Mono', monospace;
   font-weight: 700;
   text-align: center;
   color: #DA3E52;
-  width: 272px;
+  width: 250px;
   padding: 0;
   margin-bottom: 10px;
   border-radius: 5px;
@@ -140,8 +148,8 @@ code {
 
 .task > i {
   position: relative;
-  bottom: 3px;
-  left: 4px;
+  top: 10px;
+  margin-left: 4px;
   font-size: 12px;
 }
 

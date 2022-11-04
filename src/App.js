@@ -118,9 +118,16 @@ function App() {
     setBoard(newboard)
   }
 
-  /*function deleteColumn(colId){
-
-  }*/
+  function deleteColumn(colId){
+    let newboard = {...board}
+    console.log(newboard.cols)
+    newboard.cols.splice(colId, 1)
+    for(let i = colId; i < newboard.cols.length; i+=1){
+      newboard.cols[i].colId -= 1
+    }
+    console.log(newboard.cols)
+    setBoard(newboard)
+  }
 
   function deleteTask(colId, rawId){
     let newboard = {...board}
@@ -143,6 +150,7 @@ function App() {
         changeTaskText={changeTaskText}
         changeTaskWorker={changeTaskWorker}
         deleteTask={deleteTask}
+        deleteColumn={deleteColumn}
         />
     </div>
   );
