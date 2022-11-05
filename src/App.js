@@ -138,6 +138,30 @@ function App() {
     setBoard(newboard)
   }
 
+  function moveTask(colIdCur, rawIdCur, colId, rawId){
+    let newboard = {...board}
+    let task = newboard.cols[colIdCur].colRaws[rawIdCur]
+    task.rawId = rawId
+    deleteTask(colIdCur, rawIdCur)
+    newboard.cols[colId].colRaws.splice(rawId, 0, task)
+    for (let i = rawId+1; i < newboard.cols[colId].colRaws.length; i+=1){
+      newboard.cols[colId].colRaws[i].rawId += 1
+    }
+    setBoard(newboard)
+  }
+
+  function moveColumn(colIdCur, colId){
+    let newboard = {...board}
+    let column = newboard.cols[colIdCur]
+    column.colId = colId
+    deleteColumn(colIdCur)
+    newboard.cols.splice(colId, 0, column)
+    for (let i = colId+1; i < newboard.cols.length; i+=1){
+      newboard.cols[i].colId += 1
+    }
+    setBoard(newboard)
+  }
+
   return (
     <div className='wrapper'>
       <Header board={board} onChange={changeBoardName}/>
