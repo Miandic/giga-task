@@ -1,16 +1,18 @@
 import React from "react";
 import Column from "./column"
 import ColAddButton from "./coladdbutton"
+import { useSelector, useDispatch } from 'react-redux'
 
-export default function Board({board, addRaw, addColumn, changeColumnName, changeTaskName, changeTaskText, changeTaskWorker, deleteTask, deleteColumn}){
+export default function Board(){
+    const { board } = useSelector(state => state.board);
     return (
         <div className="board">
             { board.cols.map(col => {
                 if(!(col.colName === "upupdowndownleftrightleftrightAB")){
-                    return <Column column={col} add={addRaw} key={col.colId} onChange={changeColumnName} changeTaskName={changeTaskName} changeTaskText={changeTaskText} changeTaskWorker={changeTaskWorker} deleteTask={deleteTask} deleteColumn={deleteColumn}/>
+                    return <Column column={col} key={col.colId} />
                 }
                 else{
-                    return <ColAddButton addColumn={addColumn} key={1337}/>
+                    return <ColAddButton key={1337}/>
                 }
             })}
         </div>
